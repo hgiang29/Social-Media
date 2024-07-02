@@ -7,7 +7,7 @@ services:
         ports:
           - "3306:3306"
         volumes:
-          - mysql-data:/var/lib/mysql
+          - ./mysql-data:/var/lib/mysql
         environment:
           - MYSQL_ROOT_PASSWORD=admin123
         networks:
@@ -17,11 +17,12 @@ services:
         container_name: phpmyadmin
         image: phpmyadmin/phpmyadmin
         ports:
-          - "8080:80"
+          - "8081:80"
         environment:
           - PMA_HOST=mysql
           - PMA_USER=root
-          - PMA_PASSWORD=
+          - PMA_PASSWORD=admin123
+          - MYSQL_ROOT_PASSWORD=admin123
         depends_on:
           - mysql
         networks:
@@ -32,3 +33,4 @@ volumes:
 
 networks:
     mynetwork:
+      
