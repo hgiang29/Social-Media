@@ -1,0 +1,3 @@
+ALTER TABLE posts RENAME TO post;
+ALTER TABLE post CHANGE post_id id INT AUTO_INCREMENT;
+ALTER TABLE post CHANGE post_content content VARCHAR(255);
