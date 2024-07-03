@@ -1,6 +1,6 @@
 package com.social.socialapi.service;
 
-import com.social.socialapi.domain.entity.post.Post;
+import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

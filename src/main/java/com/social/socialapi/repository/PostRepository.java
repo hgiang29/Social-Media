@@ -1,7 +1,6 @@
 package com.social.socialapi.repository;
 
-import com.social.socialapi.domain.entity.User;
-import com.social.socialapi.domain.entity.post.Post;
+import com.social.socialapi.entity.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
