@@ -1,6 +1,6 @@
-package com.social.socialapi.domain.entity.post;
+package com.social.socialapi.entity.post;
 
-import com.social.socialapi.domain.entity.User;
+import com.social.socialapi.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

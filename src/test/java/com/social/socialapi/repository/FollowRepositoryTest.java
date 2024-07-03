@@ -1,8 +1,8 @@
 package com.social.socialapi.repository;
 
 
-import com.social.socialapi.domain.entity.Follow;
-import com.social.socialapi.domain.entity.User;
+import com.social.socialapi.entity.Follow;
+import com.social.socialapi.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

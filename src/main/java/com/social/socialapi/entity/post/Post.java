@@ -1,4 +1,4 @@
-package com.social.socialapi.domain.entity.post;
+package com.social.socialapi.entity.post;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

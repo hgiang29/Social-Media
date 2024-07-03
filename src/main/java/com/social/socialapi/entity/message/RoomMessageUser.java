@@ -1,5 +1,6 @@
-package com.social.socialapi.domain.entity;
+package com.social.socialapi.entity.message;
 
+import com.social.socialapi.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,23 +12,17 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Follow {
+public class RoomMessageUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    private User followingUser;
+    private RoomMessage roomMessage;
 
     @ManyToOne
-    private User followedUser;
+    private User user;
 
     private Date createdAt;
-
-    public Follow(User followingUser, User followedUser) {
-        this.followingUser = followingUser;
-        this.followedUser = followedUser;
-        this.createdAt = new Date();
-    }
 }
