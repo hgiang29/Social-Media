@@ -18,15 +18,15 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int postId;
+    private int id;
 
     private String content;
-    private String img;
+    private String post_img;
 
-    private String video;
+    private String post_video;
 
     private Date createdAt;
 
-    private Date updatedAt;
+    private Date updateAt;
 
 }
