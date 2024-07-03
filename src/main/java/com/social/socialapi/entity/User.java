@@ -1,4 +1,4 @@
-package com.social.socialapi.domain.entity.post;
+package com.social.socialapi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,19 +14,25 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Post {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String content;
-    private String post_img;
+    private String first_name;
 
-    private String post_video;
+    private String last_name;
 
-    private Date createdAt;
+    private String gender;
 
-    private Date updateAt;
+    private String email;
 
+    private String password;
+
+    private String bio;
+
+    private String profile_pic_url;
+
+    private Date created_at;
 }

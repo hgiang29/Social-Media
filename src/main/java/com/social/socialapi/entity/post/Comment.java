@@ -1,6 +1,6 @@
-package com.social.socialapi.domain.entity.post;
+package com.social.socialapi.entity.post;
 
-import com.social.socialapi.domain.entity.User;
+import com.social.socialapi.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
