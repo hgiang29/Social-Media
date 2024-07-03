@@ -21,12 +21,12 @@ public class Post {
     private int id;
 
     private String content;
-    private String post_img;
+    private String img;
 
-    private String post_video;
+    private String video;
 
     private Date createdAt;
 
-    private Date updateAt;
+    private Date updatedAt;
 
 }
