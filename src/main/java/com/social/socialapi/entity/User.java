@@ -1,38 +1,52 @@
 package com.social.socialapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.Date;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    private String first_name;
+    @Column(name = "fullname", length = 50)
+    private String fullname;
 
-    private String last_name;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
     private String gender;
 
+    @Column(name = "email", length = 255)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "email_status")
+    private String emailStatus;
+
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @Column(name = "password", length = 60)
     private String password;
 
-    private String bio;
+    @Column(name = "user_roles")
+    private String userRoles;
 
-    private String profile_pic_url;
+    @Column(name = "user_bio", columnDefinition = "TEXT")
+    private String userBio;
 
-    private Date created_at;
+    @Column(name = "user_status")
+    private String userStatus;
+
+    @Column(name = "profile_pic_url", length = 255)
+    private String profilePicUrl;
+
+    @Column(name = "address", length = 255)
+    private String address;
 }
