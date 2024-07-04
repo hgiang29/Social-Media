@@ -18,14 +18,12 @@ public class User {
     @Column(name = "fullname", length = 50)
     private String fullname;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private String gender;
 
     @Column(name = "email", length = 255)
     private String email;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "email_status")
     private String emailStatus;
 
