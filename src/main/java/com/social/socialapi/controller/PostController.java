@@ -57,6 +57,7 @@ public class PostController {
         postService.addPost(postDTO);
         return postService.getPostById(postDTO.getId());
     }
+
     @PutMapping("/post")
     public Post updatePost(@RequestBody PostDTO postDTO) {
         postService.updatePost(postDTO);
@@ -64,11 +65,11 @@ public class PostController {
     }
 
     @DeleteMapping("post/{postId}")
-    public String deletePost(@PathVariable int postId)
-    {
+    public String deletePost(@PathVariable int postId) {
         postService.deletePost(postId);
         return "Deleted";
     }
+
     //        @PostMapping("/post/like")
 //        public Post addLikePost(@RequestBody LikeDTO likeDTO) {
 //            Like like = ConvertLikeDTOtoEntity(likeDTO);
