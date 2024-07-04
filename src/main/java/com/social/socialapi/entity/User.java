@@ -1,9 +1,8 @@
 package com.social.socialapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.social.socialapi.entity.enums.EmailStatus;
+import com.social.socialapi.entity.enums.Gender;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,19 +13,23 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String first_name;
+    private String firstName;
 
-    private String last_name;
+    private String lastName;
 
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private String email;
+
+    private String username;
 
     private String password;
 
@@ -34,5 +37,41 @@ public class User {
 
     private String profile_pic_url;
 
-    private Date created_at;
+    private Date createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private EmailStatus emailStatus;
+
+    public User(String firstName, String lastName, Gender gender, String email, String username, String password, String bio, String profile_pic_url) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.bio = bio;
+        this.profile_pic_url = profile_pic_url;
+        this.createdAt = new Date();
+        emailStatus = EmailStatus.Unverified;
+    }
+
+    public User(String firstName, String lastName, Gender gender, String email, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.createdAt = new Date();
+        emailStatus = EmailStatus.Unverified;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

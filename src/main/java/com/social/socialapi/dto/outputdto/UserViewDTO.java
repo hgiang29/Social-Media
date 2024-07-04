@@ -7,8 +7,10 @@ import lombok.Setter;
 @Setter
 public class UserViewDTO {
 
-    private int userId;
+    private int id;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
 
 }
