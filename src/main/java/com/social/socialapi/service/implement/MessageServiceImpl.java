@@ -2,6 +2,8 @@ package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.MessageCreationDTO;
 import com.social.socialapi.dto.outputdto.MessageViewDTO;
+import com.social.socialapi.dto.outputdto.RecentMessageDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
 import com.social.socialapi.dto.inputdto.RoomMessageCreationDTO;
 import com.social.socialapi.dto.inputdto.RoomMessageUserCreationDTO;
@@ -83,8 +85,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<List<MessageViewDTO>> listAllMessagesInRoomMessage(int roomMessageId) {
-        RoomMessage roomMessage = roomMessageRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId).
+                orElseThrow(() -> new EntityNotFoundException(String.valueOf(roomMessageId)));
 
         List<Message> messages = messageRepository.findAllByRoomMessageOrderByCreatedAt(roomMessage);
         List<MessageViewDTO> messageViewDTOList = new ArrayList<>();
@@ -98,13 +100,32 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<RoomMessage> findAllRoomMessageByUser(int userId) {
-        return null;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(String.valueOf(userId)));
+
+        List<RoomMessageUser> roomMessageUserList = roomMessageUserRepository.findAllByUser(user);
+        List<RoomMessage> roomMessageList = new ArrayList<>();
+        roomMessageUserList.forEach(roomMessageUser -> roomMessageList.add(roomMessageUser.getRoomMessage()));
+
+        return roomMessageList;
+
     }
 
     @Override
-    public void listUserInbox(int userId) {
+    public List<UserViewDTO> getMessageRoomParticipant(int roomMessageId) {
+        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId).
+                orElseThrow(() -> new EntityNotFoundException(String.valueOf(roomMessageId)));
+        List<RoomMessageUser> roomMessageUserList = roomMessageUserRepository.findAllByRoomMessage(roomMessage);
 
+        List<UserViewDTO> userViewDTOList = new ArrayList<>();
+        roomMessageUserList.forEach(rmu -> {
+            UserViewDTO userViewDTO = mapper.map(rmu.getUser(), UserViewDTO.class);
+            userViewDTOList.add(userViewDTO);
+        });
+
+        return userViewDTOList;
     }
+
 
     private List<List<MessageViewDTO>> groupMessagesByUserList(List<MessageViewDTO> messageList) {
         List<List<MessageViewDTO>> groupedMessages = new ArrayList<>();
@@ -125,10 +146,24 @@ public class MessageServiceImpl implements MessageService {
         if (!currentGroup.isEmpty()) {
             groupedMessages.add(currentGroup);
         }
-
-
         return groupedMessages;
     }
 
+    private RecentMessageDTO getMostRecentMessageByRoom(RoomMessage roomMessage) {
+        Message message = messageRepository.findMostRecentMessageByRoomMessage(roomMessage.getId());
+        return mapper.map(message, RecentMessageDTO.class);
+    }
+
+    @Override
+    public List<RecentMessageDTO> getRecentMessageList(int userId) {
+        List<RoomMessage> roomMessageList = findAllRoomMessageByUser(userId);
+        List<RecentMessageDTO> recentMessageDTOList = new ArrayList<>();
+
+        roomMessageList.forEach(roomMessage -> {
+            recentMessageDTOList.add(this.getMostRecentMessageByRoom(roomMessage));
+        });
+
+        return recentMessageDTOList;
+    }
 
 }
