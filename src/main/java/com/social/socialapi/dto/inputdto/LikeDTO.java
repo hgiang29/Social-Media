@@ -17,5 +17,5 @@ public class LikeDTO {
       private PostDTO post;
 //      private User user;
       private Date createdAt;
-      private Date updatedAt;
+      private Date updateAt;
 }

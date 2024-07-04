@@ -8,6 +8,7 @@ import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,6 +32,17 @@ import java.util.List;
             postDTO.setContent(post.getContent());
             postDTO.setPost_img(post.getPost_img());
             postDTO.setPost_video(post.getPost_video());
+            List<LikeDTO> likeDTOList = new ArrayList<>();
+            List<Like> likes = getLikesForPost(postDTO.getId());
+            for (Like like : likes) {
+                LikeDTO likeDTO = new LikeDTO();
+                likeDTO.setId(like.getId());
+                likeDTO.setPostId(like.getPost().getId());
+                likeDTO.setCreatedAt(like.getCreatedAt());
+                likeDTO.setUpdateAt(like.getUpdatedAt());
+                likeDTOList.add(likeDTO);
+            }
+            postDTO.setLikeDTOs(likeDTOList);
             return postDTO;
         }
 
