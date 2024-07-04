@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/social
+    username: root
+    password: admin123
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
