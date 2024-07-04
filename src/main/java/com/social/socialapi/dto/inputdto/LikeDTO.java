@@ -12,10 +12,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeDTO {
-       private int id;
-       private int postId;
-      private PostDTO post;
-//      private User user;
-      private Date createdAt;
-      private Date updateAt;
+    private int id;
+    private int postId;
+    private PostDTO post;
+    //      private User user;
+    private Date createdAt;
+    private Date updateAt;
 }

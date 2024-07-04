@@ -18,6 +18,6 @@ public interface PostService {
     public Post getPostById(int id) ;
     public void updatePost(PostDTO postDTO);
     public void deletePost(int postId);
-//    public void addLikePost(Like like);
+    //    public void addLikePost(Like like);
     public List<Like> getLikesByPostId(int postId);
 }

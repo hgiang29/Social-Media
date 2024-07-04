@@ -22,7 +22,7 @@ public class Like {
     @JoinColumn(name = "post_id", nullable = true)
     private Post post;
 
-//    @ManyToOne
+    //    @ManyToOne
 //    private User user;
     private Date createdAt;
     @Column(name="update_at")

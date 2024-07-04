@@ -54,13 +54,13 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(postId);
     }
 
-//    public void addLikePost(Like like) {
+    //    public void addLikePost(Like like) {
 //        postRepository.addLikePost(like);
 //    }
     public List<Like> getLikesByPostId(int postId) {
         return postRepository.showLikePost(postId);
     }
-//    public List<Post> search(String keyword) {
+    //    public List<Post> search(String keyword) {
 //
 //        return postRepository.findByPostProfileContainingOrPostDescContaining(keyword,keyword);
 //    }
