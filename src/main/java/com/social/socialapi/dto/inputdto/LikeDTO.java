@@ -6,17 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
-    private int id;
-    private String content;
-    private String post_img;
-
-    private String post_video;
-    private List<LikeDTO> likeDTOs;
+public class LikeDTO {
+       private int id;
+       private int postId;
+      private PostDTO post;
+//      private User user;
+      private Date createdAt;
+      private Date updatedAt;
 }

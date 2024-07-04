@@ -1,5 +1,7 @@
 package com.social.socialapi.service.implement;
 
+import com.social.socialapi.dto.inputdto.LikeDTO;
+import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.PostRepository;
 import com.social.socialapi.service.PostService;
@@ -43,6 +45,12 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(postId);
     }
 
+//    public void addLikePost(Like like) {
+//        postRepository.addLikePost(like);
+//    }
+    public List<Like> getLikesByPostId(int postId) {
+        return postRepository.showLikePost(postId);
+    }
 //    public List<Post> search(String keyword) {
 //
 //        return postRepository.findByPostProfileContainingOrPostDescContaining(keyword,keyword);
