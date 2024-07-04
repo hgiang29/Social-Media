@@ -1,4 +1,4 @@
 package com.social.socialapi.dto.inputdto;
 
-public class UserCreationModel {
+public class UserCreationDTO {
 }

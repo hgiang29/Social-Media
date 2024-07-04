@@ -25,4 +25,11 @@ public class RoomMessageUser {
     private User user;
 
     private Date createdAt;
+
+
+    public RoomMessageUser(RoomMessage roomMessage, User user) {
+        this.roomMessage = roomMessage;
+        this.user = user;
+        this.createdAt = new Date();
+    }
 }

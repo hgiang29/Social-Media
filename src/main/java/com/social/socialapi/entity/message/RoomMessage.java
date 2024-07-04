@@ -24,4 +24,18 @@ public class RoomMessage {
     private User admin;
 
     private Date createdAt;
+
+    public RoomMessage(String name, User admin) {
+        this.name = name;
+        this.admin = admin;
+        this.createdAt = new Date();
+    }
+
+    @Override
+    public String toString() {
+        return "RoomMessage{" +
+                "name='" + name + '\'' +
+                ", admin=" + admin.getLastName() + " " + admin.getFirstName() +
+                '}';
+    }
 }
