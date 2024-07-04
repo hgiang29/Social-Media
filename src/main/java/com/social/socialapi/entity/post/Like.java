@@ -22,8 +22,8 @@ public class Like {
     @JoinColumn(name = "post_id", nullable = true)
     private Post post;
 
-    @ManyToOne
-    private User user;
+    //    @ManyToOne
+//    private User user;
     private Date createdAt;
     @Column(name="update_at")
     private Date updatedAt;
