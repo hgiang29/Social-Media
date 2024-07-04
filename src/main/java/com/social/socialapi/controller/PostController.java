@@ -42,15 +42,13 @@ import java.util.List;
 
         @PostMapping("/post")
         public Post addPost(@RequestBody PostDTO postDTO) {
-            Post post = ConvertPostDTOtoEntity(postDTO);
-            postService.addPost(post);
+            postService.addPost(postDTO);
             return postService.getPostById(postDTO.getId());
         }
         @PutMapping("/post")
         public Post updatePost(@RequestBody PostDTO postDTO) {
-            Post post = ConvertPostDTOtoEntity(postDTO);
-            postService.updatePost(post);
-            return postService.getPostById(post.getId());
+            postService.updatePost(postDTO);
+            return postService.getPostById(postDTO.getId());
         }
 
         @DeleteMapping("post/{postId}")
@@ -69,13 +67,6 @@ import java.util.List;
         public List<Like> getLikesForPost(@PathVariable int postId) {
             return postService.getLikesByPostId(postId);
         }
-        public Post ConvertPostDTOtoEntity(PostDTO postDTO) {
-            Post post = new Post();
-            post.setId(postDTO.getId());
-            post.setContent(postDTO.getContent());
-            post.setPost_img(postDTO.getPost_img());
-            post.setPost_video(postDTO.getPost_video());
-            return post;
-        }
+
 
     }

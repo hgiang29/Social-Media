@@ -1,10 +1,12 @@
 package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.LikeDTO;
+import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.PostRepository;
 import com.social.socialapi.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,12 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     @Autowired
     public PostRepository postRepository;
-
+    @Autowired
+    private final ModelMapper mapper;
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
+        this.postRepository = postRepository;
+        this.mapper = mapper;
+    }
     public List<Post> getAllPosts(){
         try {
 
@@ -28,7 +35,8 @@ public class PostServiceImpl implements PostService {
             return new ArrayList<>();
         }
     }
-    public void addPost(Post post){
+    public void addPost(PostDTO postDTO){
+        Post post = ConvertPostDTOtoEntity(postDTO);
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
         postRepository.save(post);
@@ -36,7 +44,8 @@ public class PostServiceImpl implements PostService {
     public Post getPostById(int id){
         return postRepository.findById(id).orElse(new Post());
     }
-    public void updatePost(Post post) {
+    public void updatePost(PostDTO postDTO) {
+        Post post = ConvertPostDTOtoEntity(postDTO);
         post.setUpdateAt(Date.from(Instant.now()));
         postRepository.save(post);
     }
@@ -55,4 +64,12 @@ public class PostServiceImpl implements PostService {
 //
 //        return postRepository.findByPostProfileContainingOrPostDescContaining(keyword,keyword);
 //    }
+    public Post ConvertPostDTOtoEntity(PostDTO postDTO) {
+        Post post = new Post();
+        post.setId(postDTO.getId());
+        post.setContent(postDTO.getContent());
+        post.setPost_img(postDTO.getPost_img());
+        post.setPost_video(postDTO.getPost_video());
+        return post;
+    }
 }
