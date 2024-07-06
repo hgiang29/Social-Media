@@ -13,8 +13,8 @@ import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Integer> {
 
-//    void addLikePost(Like like);
+    //    void addLikePost(Like like);
     @Query("select like from Like like where like.post.id = :IdPost")
-    List<Like> showLikePost (@Param("IdPost") int IdPost);
+    List<Like> showLikePost(@Param("IdPost") int IdPost);
 
 }

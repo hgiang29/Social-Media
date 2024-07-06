@@ -6,6 +6,7 @@ import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,31 +20,23 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/posts")
-    public List<Post> getAllPost() {
+    public ResponseEntity<List<Post>> getAllPost() {
 
-        return postService.getAllPosts();
+        return ResponseEntity.ok(postService.getAllPosts());
     }
 
     @GetMapping("/post/{postId}")
-    public PostDTO getPost(@PathVariable int postId) {
+    public ResponseEntity<PostDTO> getPost(@PathVariable int postId) {
         Post post = postService.getPostById(postId);
-        PostDTO postDTO = new PostDTO();
-        postDTO.setId(post.getId());
-        postDTO.setContent(post.getContent());
-        postDTO.setPost_img(post.getPost_img());
-        postDTO.setPost_video(post.getPost_video());
+        PostDTO postDTO = ConvertPostEntityToDTO(post);
         List<LikeDTO> likeDTOList = new ArrayList<>();
         List<Like> likes = getLikesForPost(postDTO.getId());
         for (Like like : likes) {
-            LikeDTO likeDTO = new LikeDTO();
-            likeDTO.setId(like.getId());
-            likeDTO.setPostId(like.getPost().getId());
-            likeDTO.setCreatedAt(like.getCreatedAt());
-            likeDTO.setUpdateAt(like.getUpdatedAt());
+            LikeDTO likeDTO = ConvertLikeEntityToDTO(like);
             likeDTOList.add(likeDTO);
         }
         postDTO.setLikeDTOs(likeDTOList);
-        return postDTO;
+        return ResponseEntity.ok(postDTO);
     }
 
 //        @GetMapping("jobPosts/keyword/{keyword}")
@@ -53,33 +46,46 @@ public class PostController {
 //        }
 
     @PostMapping("/post")
-    public Post addPost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<PostDTO> addPost(@RequestBody PostDTO postDTO) {
         postService.addPost(postDTO);
-        return postService.getPostById(postDTO.getId());
+        PostDTO ResponsePostDTO = ConvertPostEntityToDTO(postService.getPostById(postDTO.getId()));
+        return ResponseEntity.ok(ResponsePostDTO);
     }
 
     @PutMapping("/post")
-    public Post updatePost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO) {
         postService.updatePost(postDTO);
-        return postService.getPostById(postDTO.getId());
+        PostDTO ResponsePostDTO = ConvertPostEntityToDTO(postService.getPostById(postDTO.getId()));
+        return ResponseEntity.ok(ResponsePostDTO);
     }
 
     @DeleteMapping("post/{postId}")
-    public String deletePost(@PathVariable int postId) {
+    public ResponseEntity<String> deletePost(@PathVariable int postId) {
         postService.deletePost(postId);
-        return "Deleted";
+        return ResponseEntity.ok("Deleted");
     }
 
-    //        @PostMapping("/post/like")
-//        public Post addLikePost(@RequestBody LikeDTO likeDTO) {
-//            Like like = ConvertLikeDTOtoEntity(likeDTO);
-//            postService.addLikePost(like);
-//            return postService.getPostById(likeDTO.getPostId());
-//        }
     @GetMapping("/post/{postId}/likes")
     public List<Like> getLikesForPost(@PathVariable int postId) {
         return postService.getLikesByPostId(postId);
     }
 
+    public PostDTO ConvertPostEntityToDTO(Post post) {
+        PostDTO postDTO = new PostDTO();
+        postDTO.setId(post.getId());
+        postDTO.setContent(post.getContent());
+        postDTO.setPost_img(post.getPost_img());
+        postDTO.setPost_video(post.getPost_video());
+        return postDTO;
+    }
+
+    public LikeDTO ConvertLikeEntityToDTO(Like like) {
+        LikeDTO likeDTO = new LikeDTO();
+        likeDTO.setId(like.getId());
+        likeDTO.setPostId(like.getPost().getId());
+        likeDTO.setId(like.getId());
+        likeDTO.setId(like.getId());
+        return likeDTO;
+    }
 
 }

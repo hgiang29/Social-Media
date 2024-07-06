@@ -21,29 +21,29 @@ public class PostServiceImpl implements PostService {
     @Autowired
     public PostRepository postRepository;
     @Autowired
-    private final ModelMapper mapper;
-    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
-        this.postRepository = postRepository;
-        this.mapper = mapper;
-    }
-    public List<Post> getAllPosts(){
+    private ModelMapper mapper;
+
+    public List<Post> getAllPosts() {
         try {
 
             return (List<Post>) postRepository.findAll();
         } catch (Exception e) {
-            System.out.println("Error occurred while fetching posts: "+ e);
+            System.out.println("Error occurred while fetching posts: " + e);
             return new ArrayList<>();
         }
     }
-    public void addPost(PostDTO postDTO){
+
+    public void addPost(PostDTO postDTO) {
         Post post = ConvertPostDTOtoEntity(postDTO);
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
         postRepository.save(post);
     }
-    public Post getPostById(int id){
+
+    public Post getPostById(int id) {
         return postRepository.findById(id).orElse(new Post());
     }
+
     public void updatePost(PostDTO postDTO) {
         Post post = ConvertPostDTOtoEntity(postDTO);
         post.setUpdateAt(Date.from(Instant.now()));
@@ -60,6 +60,7 @@ public class PostServiceImpl implements PostService {
     public List<Like> getLikesByPostId(int postId) {
         return postRepository.showLikePost(postId);
     }
+
     //    public List<Post> search(String keyword) {
 //
 //        return postRepository.findByPostProfileContainingOrPostDescContaining(keyword,keyword);

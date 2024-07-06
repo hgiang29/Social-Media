@@ -14,10 +14,15 @@ import java.util.List;
 public interface PostService {
 
     public List<Post> getAllPosts();
+
     public void addPost(PostDTO postDTO);
-    public Post getPostById(int id) ;
+
+    public Post getPostById(int id);
+
     public void updatePost(PostDTO postDTO);
+
     public void deletePost(int postId);
+
     //    public void addLikePost(Like like);
     public List<Like> getLikesByPostId(int postId);
 }
