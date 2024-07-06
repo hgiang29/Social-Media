@@ -8,6 +8,7 @@ import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,13 @@ public class PostController {
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<PostDTO> getPost(@PathVariable int postId) {
-        Post post = postService.getPostById(postId);
+        Post post = new Post();
+        try {
+             post = postService.getPostById(postId);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         PostDTO postDTO = ConvertPostEntityToDTO(post);
         List<LikeDTO> likeDTOList = new ArrayList<>();
         List<Like> likes = getLikesForPost(postDTO.getId());
@@ -52,6 +59,11 @@ public class PostController {
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
+    @PostMapping("/post/image/{id}")
+    public ResponseEntity<PostDTO> addImage(@PathVariable final Integer id, @RequestPart final MultipartFile file) {
+        this.postService.uploadImage(id, file);
+        return ResponseEntity.ok(ConvertPostEntityToDTO(postService.getPostById(id)));
+    }
     @PutMapping("/post")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO) {
         postService.updatePost(postDTO);
