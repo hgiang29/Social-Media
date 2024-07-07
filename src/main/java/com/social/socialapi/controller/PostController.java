@@ -2,8 +2,10 @@ package com.social.socialapi.controller;
 
 import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
+import com.social.socialapi.dto.inputdto.ShareDTO;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +38,10 @@ public class PostController {
             e.printStackTrace();
         }
         PostDTO postDTO = ConvertPostEntityToDTO(post);
-        List<LikeDTO> likeDTOList = new ArrayList<>();
-        List<Like> likes = getLikesForPost(postDTO.getId());
-        for (Like like : likes) {
-            LikeDTO likeDTO = ConvertLikeEntityToDTO(like);
-            likeDTOList.add(likeDTO);
-        }
+        List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
         postDTO.setLikeDTOs(likeDTOList);
+        List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
+        postDTO.setShareDTOS(shareDTOList);
         return ResponseEntity.ok(postDTO);
     }
 
@@ -59,10 +58,10 @@ public class PostController {
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
-    @PostMapping("/post/image/{id}")
-    public ResponseEntity<PostDTO> addImage(@PathVariable final Integer id, @RequestPart final MultipartFile file) {
-        this.postService.uploadImage(id, file);
-        return ResponseEntity.ok(ConvertPostEntityToDTO(postService.getPostById(id)));
+    @PostMapping("/post/image/{PostId}")
+    public ResponseEntity<PostDTO> addImage(@PathVariable final Integer PostId, @RequestPart final MultipartFile file) {
+        this.postService.uploadImage(PostId, file);
+        return ResponseEntity.ok(ConvertPostEntityToDTO(postService.getPostById(PostId)));
     }
     @PutMapping("/post")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO) {
@@ -78,8 +77,22 @@ public class PostController {
     }
 
     @GetMapping("/post/{postId}/likes")
-    public List<Like> getLikesForPost(@PathVariable int postId) {
-        return postService.getLikesByPostId(postId);
+    public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
+        List<Like> likes = postService.getLikesByPostId(postId);
+        List<LikeDTO> likeDTOS = new ArrayList<>();
+        for (Like like: likes){
+            likeDTOS.add(ConvertLikeEntityToDTO(like));
+        }
+        return likeDTOS;
+    }
+    @GetMapping("/post/{postId}/shares")
+    public List<ShareDTO> getSharesForPost(@PathVariable int postId) {
+        List<Share> shares = postService.getSharesByPostId(postId);
+        List<ShareDTO> shareDTOS = new ArrayList<>();
+        for(Share share : shares){
+            shareDTOS.add(ConvertShareEntityToDTO(share));
+        }
+        return shareDTOS;
     }
 
     public PostDTO ConvertPostEntityToDTO(Post post) {
@@ -95,9 +108,13 @@ public class PostController {
         LikeDTO likeDTO = new LikeDTO();
         likeDTO.setId(like.getId());
         likeDTO.setPostId(like.getPost().getId());
-        likeDTO.setId(like.getId());
-        likeDTO.setId(like.getId());
         return likeDTO;
+    }
+    public ShareDTO ConvertShareEntityToDTO(Share share) {
+        ShareDTO ShareDTO = new ShareDTO();
+        ShareDTO.setId(share.getId());
+        ShareDTO.setPostId(share.getPost().getId());
+        return ShareDTO;
     }
 
 }

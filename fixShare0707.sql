@@ -1,0 +1,5 @@
+ALTER TABLE shares RENAME TO share;
+ALTER TABLE share CHANGE share_id id INT AUTO_INCREMENT;
+
+
+

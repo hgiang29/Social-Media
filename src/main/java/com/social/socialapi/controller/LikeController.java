@@ -36,7 +36,6 @@ public class LikeController {
         likeDTO.setId(like.getId());
         likeDTO.setPostId(like.getPost().getId());
         likeDTO.setId(like.getId());
-        likeDTO.setId(like.getId());
         return likeDTO;
     }
 }

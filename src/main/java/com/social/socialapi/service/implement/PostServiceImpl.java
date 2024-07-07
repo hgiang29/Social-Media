@@ -5,6 +5,7 @@ import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.exceptions.FuncErrorException;
 import com.social.socialapi.repository.PostRepository;
 import com.social.socialapi.service.FileUploadService;
@@ -78,6 +79,11 @@ public class PostServiceImpl implements PostService {
 //    }
     public List<Like> getLikesByPostId(int postId) {
         return postRepository.showLikePost(postId);
+    }
+
+    public List<Share> getSharesByPostId(int postId)
+    {
+        return postRepository.showSharePost(postId);
     }
 
     //    public List<Post> search(String keyword) {
