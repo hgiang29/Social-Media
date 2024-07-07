@@ -1,11 +1,9 @@
 package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.CommentDTO;
-import com.social.socialapi.dto.inputdto.CommentDTO;
-import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Post;
-import com.social.socialapi.repository.CommentRepository;
+import com.social.socialapi.repository.post.CommentRepository;
 import com.social.socialapi.service.CommentService;
 import com.social.socialapi.service.PostService;
 import org.modelmapper.ModelMapper;

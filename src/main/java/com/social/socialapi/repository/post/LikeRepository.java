@@ -1,4 +1,4 @@
-package com.social.socialapi.repository;
+package com.social.socialapi.repository.post;
 
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;

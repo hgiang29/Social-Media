@@ -3,7 +3,7 @@ package com.social.socialapi.service.implement;
 import com.social.socialapi.dto.inputdto.ShareDTO;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
-import com.social.socialapi.repository.ShareRepository;
+import com.social.socialapi.repository.post.ShareRepository;
 import com.social.socialapi.service.PostService;
 import com.social.socialapi.service.ShareService;
 import org.modelmapper.ModelMapper;

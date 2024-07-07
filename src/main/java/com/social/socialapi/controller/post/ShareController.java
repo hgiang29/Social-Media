@@ -1,4 +1,4 @@
-package com.social.socialapi.controller;
+package com.social.socialapi.controller.post;
 
 import com.social.socialapi.dto.inputdto.ShareDTO;
 import com.social.socialapi.entity.post.Share;

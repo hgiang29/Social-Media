@@ -1,4 +1,4 @@
-package com.social.socialapi.controller;
+package com.social.socialapi.controller.post;
 
 import com.social.socialapi.dto.inputdto.CommentDTO;
 import com.social.socialapi.dto.inputdto.LikeDTO;
@@ -34,9 +34,8 @@ public class PostController {
     public ResponseEntity<PostDTO> getPost(@PathVariable int postId) {
         Post post = new Post();
         try {
-             post = postService.getPostById(postId);
-        }
-        catch (Exception e) {
+            post = postService.getPostById(postId);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         PostDTO postDTO = ConvertPostEntityToDTO(post);
@@ -65,6 +64,7 @@ public class PostController {
         this.postService.uploadImage(PostId, file);
         return ResponseEntity.ok(ConvertPostEntityToDTO(postService.getPostById(PostId)));
     }
+
     @PutMapping("/post")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO) {
         postService.updatePost(postDTO);
@@ -77,34 +77,38 @@ public class PostController {
         postService.deletePost(postId);
         return ResponseEntity.ok("Deleted");
     }
+
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
         List<Like> likes = postService.getLikesByPostId(postId);
         List<LikeDTO> likeDTOS = new ArrayList<>();
-        for (Like like: likes){
+        for (Like like : likes) {
             likeDTOS.add(ConvertLikeEntityToDTO(like));
         }
         return likeDTOS;
     }
+
     @GetMapping("/post/{postId}/shares")
     public List<ShareDTO> getSharesForPost(@PathVariable int postId) {
         List<Share> shares = postService.getSharesByPostId(postId);
         List<ShareDTO> shareDTOS = new ArrayList<>();
-        for(Share share : shares){
+        for (Share share : shares) {
             shareDTOS.add(ConvertShareEntityToDTO(share));
         }
         return shareDTOS;
     }
+
     @GetMapping("/post/{postId}/comments")
     public List<CommentDTO> getCommentsForPost(@PathVariable int postId) {
         List<Comment> Comments = postService.getCommentsByPostId(postId);
         List<CommentDTO> CommentDTOS = new ArrayList<>();
-        for(Comment comment : Comments){
+        for (Comment comment : Comments) {
             CommentDTOS.add(ConvertCommentEntityToDTO(comment));
         }
         return CommentDTOS;
     }
+
     private PostDTO ConvertPostEntityToDTO(Post post) {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(post.getId());
@@ -120,17 +124,19 @@ public class PostController {
         likeDTO.setPostId(like.getPost().getId());
         return likeDTO;
     }
+
     private ShareDTO ConvertShareEntityToDTO(Share share) {
         ShareDTO ShareDTO = new ShareDTO();
         ShareDTO.setId(share.getId());
         ShareDTO.setPostId(share.getPost().getId());
         return ShareDTO;
     }
+
     private CommentDTO ConvertCommentEntityToDTO(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setContent(comment.getContent());
-        if(comment.getParent()!= null){
+        if (comment.getParent() != null) {
             commentDTO.setParentId(comment.getParent().getId());
         }
         commentDTO.setPostId(comment.getPost().getId());
