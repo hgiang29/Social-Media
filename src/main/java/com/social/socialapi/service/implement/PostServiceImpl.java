@@ -3,6 +3,7 @@ package com.social.socialapi.service.implement;
 import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
+import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
@@ -86,6 +87,10 @@ public class PostServiceImpl implements PostService {
         return postRepository.showSharePost(postId);
     }
 
+    public List<Comment> getCommentsByPostId(int postId)
+    {
+        return postRepository.showCommentPost(postId);
+    }
     //    public List<Post> search(String keyword) {
 //
 //        return postRepository.findByPostProfileContainingOrPostDescContaining(keyword,keyword);
