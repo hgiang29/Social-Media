@@ -26,7 +26,6 @@ public class ShareController {
         ShareDTO ShareDTO = new ShareDTO();
         ShareDTO.setId(share.getId());
         ShareDTO.setPostId(share.getPost().getId());
-        ShareDTO.setId(share.getId());
         return ShareDTO;
     }
 }

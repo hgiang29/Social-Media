@@ -2,6 +2,7 @@ package com.social.socialapi.service;
 
 import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
+import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
@@ -30,4 +31,5 @@ public interface PostService {
     //    public void addLikePost(Like like);
     public List<Like> getLikesByPostId(int postId);
     public List<Share> getSharesByPostId(int postId);
+    public List<Comment> getCommentsByPostId(int postId);
 }

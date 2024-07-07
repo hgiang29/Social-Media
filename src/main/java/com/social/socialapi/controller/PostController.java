@@ -1,8 +1,10 @@
 package com.social.socialapi.controller;
 
+import com.social.socialapi.dto.inputdto.CommentDTO;
 import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.inputdto.ShareDTO;
+import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
@@ -75,7 +77,7 @@ public class PostController {
         postService.deletePost(postId);
         return ResponseEntity.ok("Deleted");
     }
-
+    // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
         List<Like> likes = postService.getLikesByPostId(postId);
@@ -94,8 +96,16 @@ public class PostController {
         }
         return shareDTOS;
     }
-
-    public PostDTO ConvertPostEntityToDTO(Post post) {
+    @GetMapping("/post/{postId}/comments")
+    public List<CommentDTO> getCommentsForPost(@PathVariable int postId) {
+        List<Comment> Comments = postService.getCommentsByPostId(postId);
+        List<CommentDTO> CommentDTOS = new ArrayList<>();
+        for(Comment comment : Comments){
+            CommentDTOS.add(ConvertCommentEntityToDTO(comment));
+        }
+        return CommentDTOS;
+    }
+    private PostDTO ConvertPostEntityToDTO(Post post) {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(post.getId());
         postDTO.setContent(post.getContent());
@@ -104,17 +114,27 @@ public class PostController {
         return postDTO;
     }
 
-    public LikeDTO ConvertLikeEntityToDTO(Like like) {
+    private LikeDTO ConvertLikeEntityToDTO(Like like) {
         LikeDTO likeDTO = new LikeDTO();
         likeDTO.setId(like.getId());
         likeDTO.setPostId(like.getPost().getId());
         return likeDTO;
     }
-    public ShareDTO ConvertShareEntityToDTO(Share share) {
+    private ShareDTO ConvertShareEntityToDTO(Share share) {
         ShareDTO ShareDTO = new ShareDTO();
         ShareDTO.setId(share.getId());
         ShareDTO.setPostId(share.getPost().getId());
         return ShareDTO;
+    }
+    private CommentDTO ConvertCommentEntityToDTO(Comment comment) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(comment.getId());
+        commentDTO.setContent(comment.getContent());
+        if(comment.getParent()!= null){
+            commentDTO.setParentId(comment.getParent().getId());
+        }
+        commentDTO.setPostId(comment.getPost().getId());
+        return commentDTO;
     }
 
 }

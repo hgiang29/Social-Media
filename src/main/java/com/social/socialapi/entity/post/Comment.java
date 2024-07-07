@@ -1,9 +1,7 @@
 package com.social.socialapi.entity.post;
 
 import com.social.socialapi.entity.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,17 +15,21 @@ import java.util.Date;
 public class Comment {
 
     @Id
-    private int Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
     private String Content;
 
     private Date createdAt;
 
     @ManyToOne
-    private Comment parentComment;
+    @JoinColumn(name = "parent_id", nullable = true)
+    private Comment parent;
 
-
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = true)
+    private Post post;
 }
