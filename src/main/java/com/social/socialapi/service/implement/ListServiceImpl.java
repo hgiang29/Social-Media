@@ -18,37 +18,34 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ListServiceImpl  implements LikeService {
+public class ListServiceImpl implements LikeService {
     @Autowired
     public LikeRepository likeRepository;
     @Autowired
     public PostService postService;
     @Autowired
-    private  ModelMapper mapper;
+    private ModelMapper mapper;
 
-    public void addLike(LikeDTO likeDTO){
-        try {
-            Like like = ConvertLikeDTOtoEntity(likeDTO);
-            like.setCreatedAt(Date.from(Instant.now()));
-            like.setUpdatedAt(Date.from(Instant.now()));
-            likeRepository.save(like);
-
-        } catch (Exception e) {
-            System.out.println("Error occurred while fetching posts: "+ e);
-        }
+    public Like addLike(LikeDTO likeDTO) {
+        Like like = ConvertLikeDTOtoEntity(likeDTO);
+        like.setCreatedAt(Date.from(Instant.now()));
+        like.setUpdatedAt(Date.from(Instant.now()));
+        return likeRepository.save(like);
     }
-    public void deleteLike(int likeId){
+
+    public void deleteLike(int likeId) {
         try {
             likeRepository.deleteById(likeId);
 
         } catch (Exception e) {
-            System.out.println("Error occurred while fetching posts: "+ e);
+            System.out.println("Error occurred while fetching posts: " + e);
         }
     }
 
     public Like getLike(int likeId) {
         return likeRepository.findById(likeId).orElse(new Like());
     }
+
     public Like ConvertLikeDTOtoEntity(LikeDTO likeDTO) {
         Like like = new Like();
         Post post = postService.getPostById(likeDTO.getPostId());

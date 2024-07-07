@@ -25,7 +25,7 @@ public class Like {
     //    @ManyToOne
 //    private User user;
     private Date createdAt;
-    @Column(name="update_at")
+    @Column(name = "update_at")
     private Date updatedAt;
 
 }
