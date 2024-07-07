@@ -130,7 +130,9 @@ public class PostController {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setContent(comment.getContent());
-        commentDTO.setParentId(comment.getParent().getId());
+        if(comment.getParent()!= null){
+            commentDTO.setParentId(comment.getParent().getId());
+        }
         commentDTO.setPostId(comment.getPost().getId());
         return commentDTO;
     }

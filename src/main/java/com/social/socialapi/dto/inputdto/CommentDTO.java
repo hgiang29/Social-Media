@@ -14,7 +14,6 @@ import java.util.Date;
 public class CommentDTO {
     private int id;
     private int postId;
-    private int commentId;
     private int parentId;
     private String content;
     private PostDTO post;
