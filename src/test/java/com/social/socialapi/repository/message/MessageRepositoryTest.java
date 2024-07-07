@@ -53,4 +53,13 @@ public class MessageRepositoryTest {
         System.out.println(messageList);
     }
 
+    @Test
+    void findMostRecentMessage() {
+        RoomMessage roomMessage = roomMessageRepository.findById(1).
+                orElseThrow(() -> new EntityNotFoundException(String.valueOf(4)));
+
+        Message message = messageRepository.findMostRecentMessageByRoomMessage(roomMessage.getId());
+        System.out.println(message.getCreatedAt());
+    }
+
 }

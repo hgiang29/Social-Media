@@ -4,6 +4,8 @@ import com.social.socialapi.dto.inputdto.MessageCreationDTO;
 import com.social.socialapi.dto.inputdto.RoomMessageCreationDTO;
 import com.social.socialapi.dto.inputdto.RoomMessageUserCreationDTO;
 import com.social.socialapi.dto.outputdto.MessageViewDTO;
+import com.social.socialapi.dto.outputdto.RecentMessageDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.message.Message;
 import com.social.socialapi.entity.message.RoomMessage;
 
@@ -21,7 +23,9 @@ public interface MessageService {
 
     List<RoomMessage> findAllRoomMessageByUser(int userId);
 
+    List<UserViewDTO> getMessageRoomParticipant(int roomMessageId);
+
     // List all the newest user inbox messages
-    void listUserInbox(int userId);
+    List<RecentMessageDTO> getRecentMessageList(int userId);
 
 }
