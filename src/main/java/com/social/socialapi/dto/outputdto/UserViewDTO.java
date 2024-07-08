@@ -16,7 +16,7 @@ public class UserViewDTO {
 
     private String profile_pic_url;
 
-    public User ConvertDTOtoEntity(){
+    public User ConvertDTOtoEntity() {
         User user = new User();
         user.setId(id);
         user.setFirstName(firstName);
