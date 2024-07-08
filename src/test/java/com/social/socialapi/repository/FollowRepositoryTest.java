@@ -26,10 +26,8 @@ public class FollowRepositoryTest {
 
     @Test
     void createFollowRelationship() {
-        User user = userRepository.findById(3).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(3)));
-        User follower = userRepository.findById(4).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        User user = userRepository.findById(3);
+        User follower = userRepository.findById(4);
         Follow follow = new Follow(user, follower);
 
         followRepository.save(follow);
@@ -45,8 +43,7 @@ public class FollowRepositoryTest {
 
     @Test
     void getFollowingList() {
-        User user = userRepository.findById(3).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(3)));
+        User user = userRepository.findById(3);
 
         List<User> followings = followRepository.getFollowingList(user);
 
