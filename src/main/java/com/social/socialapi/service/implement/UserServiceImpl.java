@@ -4,6 +4,7 @@ import com.social.socialapi.dto.inputdto.UserCreationDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
 import com.social.socialapi.exceptions.EmailExistException;
+import com.social.socialapi.exceptions.UsernameExistException;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -43,10 +44,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserViewDTO register(UserCreationDTO userCreationDTO) throws EmailExistException {
+    public UserViewDTO getUserDTOByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return mapper.map(user, UserViewDTO.class);
+    }
+
+    @Override
+    public UserViewDTO register(UserCreationDTO userCreationDTO) throws EmailExistException, UsernameExistException {
         User user = userRepository.findByEmail(userCreationDTO.getEmail());
         if (user != null) {
             throw new EmailExistException("User with email " + userCreationDTO.getEmail() + " already exists");
+        }
+
+        if (userRepository.existsByUsername(userCreationDTO.getUsername())) {
+            throw new UsernameExistException("User with username exists");
         }
 
         user = new User(userCreationDTO.getFirstName(), userCreationDTO.getLastName(), userCreationDTO.getGender(), userCreationDTO.getEmail(), userCreationDTO.getUsername());

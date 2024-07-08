@@ -4,8 +4,10 @@ import com.social.socialapi.dto.inputdto.UserCreationDTO;
 import com.social.socialapi.dto.inputdto.UserLoginDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.exceptions.EmailExistException;
+import com.social.socialapi.exceptions.UsernameExistException;
 import com.social.socialapi.security.jwt.JwtUntil;
 import com.social.socialapi.service.UserService;
+import com.social.socialapi.utils.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,27 +32,22 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> createAuthenticaionToken(@RequestBody UserLoginDTO request) throws Exception {
+    public ResponseEntity<Object> createAuthenticationToken(@RequestBody UserLoginDTO request) throws Exception {
 
         userService.authenticate(request.getEmail(), request.getPassword());
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(request.getEmail());
 
+        UserViewDTO userViewDTO = userService.getUserDTOByEmail(request.getEmail());
         String token = jwtUntil.generateToken(userDetails);
 
-        return ResponseEntity.ok(token);
+        return ResponseHandler.generateAuthenticationResponse(userViewDTO, token);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUserAccount(@RequestBody UserCreationDTO userCreationDTO) {
-
-        try {
-            return ResponseEntity.ok(userService.register(userCreationDTO));
-        } catch (EmailExistException exception) {
-            return ResponseEntity.badRequest().body("Email already exist");
-        }
-
+    public ResponseEntity<Object> registerUserAccount(@RequestBody UserCreationDTO userCreationDTO) throws UsernameExistException, EmailExistException {
+        return ResponseEntity.ok(userService.register(userCreationDTO));
     }
 
 
