@@ -1,4 +1,4 @@
-package com.social.socialapi.controller;
+package com.social.socialapi.controller.post;
 
 import com.mysql.cj.x.protobuf.Mysqlx;
 import com.social.socialapi.dto.inputdto.LikeDTO;

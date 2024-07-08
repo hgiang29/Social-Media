@@ -12,5 +12,10 @@ public class HelloController {
         return ResponseEntity.ok("hehe");
     }
 
+    @GetMapping("/jwt")
+    public ResponseEntity<String> jwtcheck() {
+        return ResponseEntity.ok("jwt works properly");
+    }
+
 
 }

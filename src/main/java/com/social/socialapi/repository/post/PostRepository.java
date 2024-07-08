@@ -1,4 +1,4 @@
-package com.social.socialapi.repository;
+package com.social.socialapi.repository.post;
 
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
@@ -20,8 +20,8 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
     List<Like> showLikePost(@Param("IdPost") int IdPost);
 
     @Query("select share from Share share where share.post.id = :IdPost")
-    List<Share> showSharePost (@Param("IdPost") int IdPost);
+    List<Share> showSharePost(@Param("IdPost") int IdPost);
 
     @Query("select comment from Comment comment where comment.post.id = :IdPost")
-    List<Comment> showCommentPost (@Param("IdPost") int IdPost);
+    List<Comment> showCommentPost(@Param("IdPost") int IdPost);
 }
