@@ -50,6 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserViewDTO getUserViewDTOById(int userId) {
+        User user = userRepository.findById(userId);
+        return mapper.map(user, UserViewDTO.class);
+    }
+
+
+    @Override
     public UserViewDTO register(UserCreationDTO userCreationDTO) throws EmailExistException, UsernameExistException {
         User user = userRepository.findByEmail(userCreationDTO.getEmail());
         if (user != null) {

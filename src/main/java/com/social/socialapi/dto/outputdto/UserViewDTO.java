@@ -16,6 +16,9 @@ public class UserViewDTO {
 
     private String profile_pic_url;
 
+
+    private String bio;
+
     public User ConvertDTOtoEntity() {
         User user = new User();
         user.setId(id);
@@ -24,4 +27,5 @@ public class UserViewDTO {
         user.setProfile_pic_url(profile_pic_url);
         return user;
     }
+
 }

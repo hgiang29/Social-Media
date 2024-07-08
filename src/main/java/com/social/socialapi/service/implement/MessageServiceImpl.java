@@ -15,7 +15,6 @@ import com.social.socialapi.repository.message.MessageRepository;
 import com.social.socialapi.repository.message.RoomMessageRepository;
 import com.social.socialapi.repository.message.RoomMessageUserRepository;
 import com.social.socialapi.service.MessageService;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +44,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void createRoomMessage(RoomMessageCreationDTO roomMessageCreationDTO) {
-        User admin = userRepository.findById(roomMessageCreationDTO.getAdminId()).get();
+        User admin = userRepository.findById(roomMessageCreationDTO.getAdminId());
         RoomMessage roomMessage = new RoomMessage(roomMessageCreationDTO.getName(), admin);
         roomMessageRepository.save(roomMessage);
 
@@ -56,7 +55,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void addRoomMessageParticipant(RoomMessageUserCreationDTO roomMessageUserCreationDTO) {
         List<Integer> participantIds = roomMessageUserCreationDTO.getUserIdList();
-        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageUserCreationDTO.getRoomMessageId()).get();
+        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageUserCreationDTO.getRoomMessageId());
 
         participantIds.forEach(participantId -> {
             User participant = userRepository.findById(participantId).get();
@@ -67,10 +66,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public String createMessage(MessageCreationDTO messageCreationDTO) {
-        User participant = userRepository.findById(messageCreationDTO.getSenderId()).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(messageCreationDTO.getSenderId())));
-        RoomMessage roomMessage = roomMessageRepository.findById(messageCreationDTO.getRoomMessageId()).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(messageCreationDTO.getRoomMessageId())));
+        User participant = userRepository.findById(messageCreationDTO.getSenderId());
+
+        RoomMessage roomMessage = roomMessageRepository.findById(messageCreationDTO.getRoomMessageId());
 
         // check if user is in the chat room
         if (roomMessageUserRepository.findByRoomMessageAndUser(roomMessage, participant) != null) {
@@ -85,8 +83,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<List<MessageViewDTO>> listAllMessagesInRoomMessage(int roomMessageId) {
-        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(roomMessageId)));
+        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId);
+
 
         List<Message> messages = messageRepository.findAllByRoomMessageOrderByCreatedAt(roomMessage);
         List<MessageViewDTO> messageViewDTOList = new ArrayList<>();
@@ -100,8 +98,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<RoomMessage> findAllRoomMessageByUser(int userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(String.valueOf(userId)));
+        User user = userRepository.findById(userId);
 
         List<RoomMessageUser> roomMessageUserList = roomMessageUserRepository.findAllByUser(user);
         List<RoomMessage> roomMessageList = new ArrayList<>();
@@ -113,8 +110,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<UserViewDTO> getMessageRoomParticipant(int roomMessageId) {
-        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(roomMessageId)));
+        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId);
+
         List<RoomMessageUser> roomMessageUserList = roomMessageUserRepository.findAllByRoomMessage(roomMessage);
 
         List<UserViewDTO> userViewDTOList = new ArrayList<>();
