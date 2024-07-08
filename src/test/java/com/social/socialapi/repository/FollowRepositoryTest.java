@@ -4,13 +4,14 @@ package com.social.socialapi.repository;
 import com.social.socialapi.entity.Follow;
 import com.social.socialapi.entity.User;
 
-import com.social.socialapi.repository.post.FollowRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+
+import java.util.List;
 
 @DataJpaTest
 @Rollback(value = false)
@@ -25,12 +26,27 @@ public class FollowRepositoryTest {
 
     @Test
     void createFollowRelationship() {
-        User user = userRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
-        User follower = userRepository.findById(2).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(2)));
-        Follow followRelationship = new Follow(follower, user);
+        User user = userRepository.findById(3);
+        User follower = userRepository.findById(4);
+        Follow follow = new Follow(user, follower);
 
-        followRepository.save(followRelationship);
+        followRepository.save(follow);
+    }
+
+    @Test
+    void getFollowerList() {
+        User user = userRepository.findById(3);
+        List<User> followers = followRepository.getFollowerList(user);
+
+        System.out.println(followers);
+    }
+
+    @Test
+    void getFollowingList() {
+        User user = userRepository.findById(3);
+
+        List<User> followings = followRepository.getFollowingList(user);
+
+        System.out.println(followings);
     }
 }
