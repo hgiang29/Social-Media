@@ -8,6 +8,7 @@ import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
+import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private PostRepository postRepository;
 
     @GetMapping("/posts")
     public ResponseEntity<List<PostDTO>> getAllPost() {
@@ -75,7 +78,11 @@ public class PostController {
 
     @DeleteMapping("post/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable int postId) {
+//        Post post = postService.getPostById(postId);
+//        post.setUser(null);
+//        postRepository.save(post);
         postService.deletePost(postId);
+
         return ResponseEntity.ok("Deleted");
     }
 

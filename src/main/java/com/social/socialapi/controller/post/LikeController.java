@@ -23,6 +23,4 @@ public class LikeController {
         LikeDTO responseLikeDTO = likeService.getLike(like.getId()).ConvertLikeEntityToDTO();
         return ResponseEntity.ok(responseLikeDTO);
     }
-
-
 }
