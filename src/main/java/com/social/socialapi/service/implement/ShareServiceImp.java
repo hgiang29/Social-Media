@@ -1,9 +1,14 @@
 package com.social.socialapi.service.implement;
 
+import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.inputdto.ShareDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.entity.User;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
+import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.repository.post.ShareRepository;
+import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.PostService;
 import com.social.socialapi.service.ShareService;
 import org.modelmapper.ModelMapper;
@@ -21,12 +26,20 @@ public class ShareServiceImp implements ShareService {
     public PostService postService;
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Share addShare(ShareDTO ShareDTO) {
-        Share Share = ConvertShareDTOtoEntity(ShareDTO);
-        Share.setCreatedAt(Date.from(Instant.now()));
-        Share.setUpdateAt(Date.from(Instant.now()));
-        return ShareRepository.save(Share);
+        PostDTO postDTO = postRepository.findById(ShareDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
+        ShareDTO.setPost(postDTO);
+        UserViewDTO userDTO = userRepository.findById(ShareDTO.getUser_id()).orElse(new User()).ConvertEntitytoDTO();
+        ShareDTO.setShareUser(userDTO);
+        Share share = ShareDTO.ConvertShareDTOtoEntity();
+        share.setCreatedAt(Date.from(Instant.now()));
+        share.setUpdateAt(Date.from(Instant.now()));
+        return ShareRepository.save(share);
     }
 
     public void deleteShare(int ShareId) {
@@ -42,11 +55,4 @@ public class ShareServiceImp implements ShareService {
         return ShareRepository.findById(ShareId).orElse(new Share());
     }
 
-    public Share ConvertShareDTOtoEntity(ShareDTO ShareDTO) {
-        Share Share = new Share();
-        Post post = postService.getPostById(ShareDTO.getPostId());
-        Share.setId(ShareDTO.getId());
-        Share.setPost(post);
-        return Share;
-    }
 }

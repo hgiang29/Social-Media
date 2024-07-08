@@ -16,19 +16,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
-@CrossOrigin
 public class PostController {
 
     @Autowired
     private PostService postService;
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPost() {
-
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<List<PostDTO>> getAllPost() {
+        // cách để chuyển từ List<Post> sang List<PostDTO>
+        return ResponseEntity.ok(postService.getAllPosts().stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/post/{postId}")
@@ -36,14 +36,16 @@ public class PostController {
         Post post = new Post();
         try {
             post = postService.getPostById(postId);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
-        PostDTO postDTO = ConvertPostEntityToDTO(post);
+        PostDTO postDTO = post.ConvertPostToPostDTO();
         List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
         postDTO.setLikeDTOs(likeDTOList);
         List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
         postDTO.setShareDTOS(shareDTOList);
+
         return ResponseEntity.ok(postDTO);
     }
 
@@ -55,21 +57,19 @@ public class PostController {
 
     @PostMapping("/post")
     public ResponseEntity<PostDTO> addPost(@RequestBody PostDTO postDTO) {
-        postService.addPost(postDTO);
-        PostDTO ResponsePostDTO = ConvertPostEntityToDTO(postService.getPostById(postDTO.getId()));
+        PostDTO ResponsePostDTO = postService.addPost(postDTO);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
     @PostMapping("/post/image/{PostId}")
     public ResponseEntity<PostDTO> addImage(@PathVariable final Integer PostId, @RequestPart final MultipartFile file) {
         this.postService.uploadImage(PostId, file);
-        return ResponseEntity.ok(ConvertPostEntityToDTO(postService.getPostById(PostId)));
+        return ResponseEntity.ok(postService.getPostById(PostId).ConvertPostToPostDTO());
     }
-
     @PutMapping("/post")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO) {
         postService.updatePost(postDTO);
-        PostDTO ResponsePostDTO = ConvertPostEntityToDTO(postService.getPostById(postDTO.getId()));
+        PostDTO ResponsePostDTO = postService.getPostById(postDTO.getId()).ConvertPostToPostDTO();
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
@@ -78,70 +78,36 @@ public class PostController {
         postService.deletePost(postId);
         return ResponseEntity.ok("Deleted");
     }
-
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
         List<Like> likes = postService.getLikesByPostId(postId);
         List<LikeDTO> likeDTOS = new ArrayList<>();
-        for (Like like : likes) {
-            likeDTOS.add(ConvertLikeEntityToDTO(like));
+        for (Like like: likes){
+            likeDTOS.add(like.ConvertLikeEntityToDTO());
         }
         return likeDTOS;
     }
-
     @GetMapping("/post/{postId}/shares")
     public List<ShareDTO> getSharesForPost(@PathVariable int postId) {
         List<Share> shares = postService.getSharesByPostId(postId);
         List<ShareDTO> shareDTOS = new ArrayList<>();
-        for (Share share : shares) {
-            shareDTOS.add(ConvertShareEntityToDTO(share));
+        for(Share share : shares){
+            shareDTOS.add(share.ConvertShareEntityToDTO());
         }
         return shareDTOS;
     }
-
     @GetMapping("/post/{postId}/comments")
     public List<CommentDTO> getCommentsForPost(@PathVariable int postId) {
         List<Comment> Comments = postService.getCommentsByPostId(postId);
         List<CommentDTO> CommentDTOS = new ArrayList<>();
-        for (Comment comment : Comments) {
-            CommentDTOS.add(ConvertCommentEntityToDTO(comment));
+        for(Comment comment : Comments){
+            CommentDTOS.add(comment.ConvertCommentEntityToDTO());
         }
         return CommentDTOS;
     }
 
-    private PostDTO ConvertPostEntityToDTO(Post post) {
-        PostDTO postDTO = new PostDTO();
-        postDTO.setId(post.getId());
-        postDTO.setContent(post.getContent());
-        postDTO.setPost_img(post.getPost_img());
-        postDTO.setPost_video(post.getPost_video());
-        return postDTO;
-    }
 
-    private LikeDTO ConvertLikeEntityToDTO(Like like) {
-        LikeDTO likeDTO = new LikeDTO();
-        likeDTO.setId(like.getId());
-        likeDTO.setPostId(like.getPost().getId());
-        return likeDTO;
-    }
 
-    private ShareDTO ConvertShareEntityToDTO(Share share) {
-        ShareDTO ShareDTO = new ShareDTO();
-        ShareDTO.setId(share.getId());
-        ShareDTO.setPostId(share.getPost().getId());
-        return ShareDTO;
-    }
-
-    private CommentDTO ConvertCommentEntityToDTO(Comment comment) {
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setId(comment.getId());
-        commentDTO.setContent(comment.getContent());
-        if (comment.getParent() != null) {
-            commentDTO.setParentId(comment.getParent().getId());
-        }
-        commentDTO.setPostId(comment.getPost().getId());
-        return commentDTO;
-    }
 
 }
