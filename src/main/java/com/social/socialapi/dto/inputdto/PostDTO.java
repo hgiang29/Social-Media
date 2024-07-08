@@ -1,6 +1,7 @@
 package com.social.socialapi.dto.inputdto;
 
 import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,13 @@ public class PostDTO {
     private List<LikeDTO> likeDTOs;
     private UserViewDTO postUser;
     private List<ShareDTO> shareDTOS;
+    public Post ConvertDTOtoEntity(){
+        Post post = new Post();
+        post.setId(id);
+        post.setContent(content);
+        post.setPost_img(post_img);
+        post.setPost_video(post_video);
+        post.setUser(postUser.ConvertDTOtoEntity());
+        return post;
+    }
 }

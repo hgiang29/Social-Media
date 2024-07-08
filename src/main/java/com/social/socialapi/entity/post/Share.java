@@ -1,5 +1,6 @@
 package com.social.socialapi.entity.post;
 
+import com.social.socialapi.dto.inputdto.ShareDTO;
 import com.social.socialapi.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,4 +30,17 @@ public class Share {
     private Date createdAt;
     @Column(name = "update_at")
     private Date updateAt;
+
+    public ShareDTO ConvertShareEntityToDTO() {
+        ShareDTO ShareDTO = new ShareDTO();
+        ShareDTO.setId(id);
+        if (user != null) {
+            ShareDTO.setShareUser(user.ConvertEntitytoDTO());
+            ShareDTO.setUser_id(user.getId());
+        }
+        ShareDTO.setPostId(post.getId());
+        ShareDTO.setCreatedAt(createdAt);
+        ShareDTO.setUpdateAt(updateAt);
+        return ShareDTO;
+    }
 }

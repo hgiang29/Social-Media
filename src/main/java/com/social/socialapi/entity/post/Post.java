@@ -1,5 +1,6 @@
 package com.social.socialapi.entity.post;
 
+import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,5 +31,14 @@ public class Post {
     private Date createdAt;
 
     private Date updateAt;
-
+    public PostDTO ConvertPostToPostDTO(){
+        PostDTO postDTO = new PostDTO();
+        postDTO.setId(id);
+        postDTO.setContent(content);
+        postDTO.setPostUserId(user.getId());
+        postDTO.setPost_img(post_img);
+        postDTO.setPost_video(post_video);
+        postDTO.setPostUser(user.ConvertEntitytoDTO());
+        return postDTO;
+    }
 }

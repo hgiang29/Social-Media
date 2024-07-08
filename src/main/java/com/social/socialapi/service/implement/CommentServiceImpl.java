@@ -2,10 +2,15 @@ package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.CommentDTO;
 import com.social.socialapi.dto.inputdto.CommentDTO;
+import com.social.socialapi.dto.inputdto.PostDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.entity.User;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.CommentRepository;
+import com.social.socialapi.repository.PostRepository;
+import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.CommentService;
 import com.social.socialapi.service.PostService;
 import org.modelmapper.ModelMapper;
@@ -24,11 +29,19 @@ public class CommentServiceImpl implements CommentService {
     public PostService postService;
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Comment addComment(CommentDTO CommentDTO) {
-        Comment Comment = ConvertCommentDTOtoEntity(CommentDTO);
-        Comment.setCreatedAt(Date.from(Instant.now()));
-        return commentRepository.save(Comment);
+        PostDTO postDTO = postRepository.findById(CommentDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
+        CommentDTO.setPost(postDTO);
+        UserViewDTO userDTO = userRepository.findById(CommentDTO.getUserId()).orElse(new User()).ConvertEntitytoDTO();
+        CommentDTO.setCommentUser(userDTO);
+        Comment comment = CommentDTO.ConvertCommentDTOtoEntity();
+        comment.setCreatedAt(Date.from(Instant.now()));
+        return commentRepository.save(comment);
     }
 
     public void deleteComment(int CommentId) {
@@ -44,14 +57,5 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(CommentId).orElse(new Comment());
     }
 
-    public Comment ConvertCommentDTOtoEntity(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        Post post = postService.getPostById(commentDTO.getPostId());
-        Comment parent = getComment(commentDTO.getParentId());
-        comment.setId(commentDTO.getId());
-        comment.setContent(commentDTO.getContent());
-        comment.setParent(parent);
-        comment.setPost(post);
-        return comment;
-    }
+
 }

@@ -16,6 +16,7 @@ public class UserViewDTO {
 
     public User ConvertDTOtoEntity(){
         User user = new User();
+        user.setId(id);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         return user;

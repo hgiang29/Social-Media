@@ -1,9 +1,14 @@
 package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.LikeDTO;
+import com.social.socialapi.dto.inputdto.PostDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.entity.User;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.LikeRepository;
+import com.social.socialapi.repository.PostRepository;
+import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
 import org.modelmapper.ModelMapper;
@@ -21,9 +26,17 @@ public class LikeServiceImpl implements LikeService {
     public PostService postService;
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Like addLike(LikeDTO likeDTO) {
-        Like like = ConvertLikeDTOtoEntity(likeDTO);
+        PostDTO postDTO = postRepository.findById(likeDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
+        likeDTO.setPost(postDTO);
+        UserViewDTO userDTO = userRepository.findById(likeDTO.getUserId()).orElse(new User()).ConvertEntitytoDTO();
+        likeDTO.setLikeUser(userDTO);
+        Like like = likeDTO.ConvertLikeDTOtoEntity();
         like.setCreatedAt(Date.from(Instant.now()));
         like.setUpdatedAt(Date.from(Instant.now()));
         return likeRepository.save(like);
@@ -42,11 +55,5 @@ public class LikeServiceImpl implements LikeService {
         return likeRepository.findById(likeId).orElse(new Like());
     }
 
-    public Like ConvertLikeDTOtoEntity(LikeDTO likeDTO) {
-        Like like = new Like();
-        Post post = postService.getPostById(likeDTO.getPostId());
-        like.setId(likeDTO.getId());
-        like.setPost(post);
-        return like;
-    }
+
 }
