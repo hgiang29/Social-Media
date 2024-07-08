@@ -1,5 +1,6 @@
 package com.social.socialapi.entity.post;
 
+import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,10 +23,20 @@ public class Like {
     @JoinColumn(name = "post_id", nullable = true)
     private Post post;
 
-    //    @ManyToOne
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     private Date createdAt;
     @Column(name = "update_at")
     private Date updatedAt;
-
+    public LikeDTO ConvertLikeEntityToDTO(){
+        LikeDTO likeDTO = new LikeDTO();
+        likeDTO.setId(id);
+        likeDTO.setUserId(user.getId());
+        likeDTO.setPostId(post.getId());
+        likeDTO.setLikeUser(user.ConvertEntitytoDTO());
+        likeDTO.setPost(post.ConvertPostToPostDTO());
+        return likeDTO;
+    }
 }
