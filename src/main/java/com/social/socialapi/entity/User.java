@@ -66,6 +66,17 @@ public class User {
         emailStatus = EmailStatus.Unverified;
     }
 
+    public User(String firstName, String lastName, Gender gender, String email, String username) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.email = email;
+        this.username = username;
+        this.createdAt = new Date();
+        emailStatus = EmailStatus.Unverified;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +

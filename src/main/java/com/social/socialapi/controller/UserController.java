@@ -1,6 +1,9 @@
 package com.social.socialapi.controller;
 
+import com.social.socialapi.dto.inputdto.UserCreationDTO;
 import com.social.socialapi.dto.inputdto.UserLoginDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.security.jwt.JwtUntil;
 import com.social.socialapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +39,17 @@ public class UserController {
 
         return ResponseEntity.ok(token);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<Object> registerUserAccount(@RequestBody UserCreationDTO userCreationDTO) {
+
+        try {
+            return ResponseEntity.ok(userService.register(userCreationDTO));
+        } catch (EmailExistException exception) {
+            return ResponseEntity.badRequest().body("Email already exist");
+        }
+
+    }
+
 
 }
