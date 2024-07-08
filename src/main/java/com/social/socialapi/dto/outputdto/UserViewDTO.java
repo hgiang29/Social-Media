@@ -14,11 +14,14 @@ public class UserViewDTO {
 
     private String lastName;
 
-    public User ConvertDTOtoEntity(){
+    private String profile_pic_url;
+
+    public User ConvertDTOtoEntity() {
         User user = new User();
         user.setId(id);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setProfile_pic_url(profile_pic_url);
         return user;
     }
 }

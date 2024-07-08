@@ -35,9 +35,8 @@ public class PostController {
     public ResponseEntity<PostDTO> getPost(@PathVariable int postId) {
         Post post = new Post();
         try {
-             post = postService.getPostById(postId);
-        }
-        catch (Exception e) {
+            post = postService.getPostById(postId);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         PostDTO postDTO = post.ConvertPostToPostDTO();
@@ -66,6 +65,7 @@ public class PostController {
         this.postService.uploadImage(PostId, file);
         return ResponseEntity.ok(postService.getPostById(PostId).ConvertPostToPostDTO());
     }
+
     @PutMapping("/post")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO) {
         postService.updatePost(postDTO);
@@ -78,36 +78,37 @@ public class PostController {
         postService.deletePost(postId);
         return ResponseEntity.ok("Deleted");
     }
+
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
         List<Like> likes = postService.getLikesByPostId(postId);
         List<LikeDTO> likeDTOS = new ArrayList<>();
-        for (Like like: likes){
+        for (Like like : likes) {
             likeDTOS.add(like.ConvertLikeEntityToDTO());
         }
         return likeDTOS;
     }
+
     @GetMapping("/post/{postId}/shares")
     public List<ShareDTO> getSharesForPost(@PathVariable int postId) {
         List<Share> shares = postService.getSharesByPostId(postId);
         List<ShareDTO> shareDTOS = new ArrayList<>();
-            for(Share share : shares){
+        for (Share share : shares) {
             shareDTOS.add(share.ConvertShareEntityToDTO());
         }
         return shareDTOS;
     }
+
     @GetMapping("/post/{postId}/comments")
     public List<CommentDTO> getCommentsForPost(@PathVariable int postId) {
         List<Comment> Comments = postService.getCommentsByPostId(postId);
         List<CommentDTO> CommentDTOS = new ArrayList<>();
-        for(Comment comment : Comments){
+        for (Comment comment : Comments) {
             CommentDTOS.add(comment.ConvertCommentEntityToDTO());
         }
         return CommentDTOS;
     }
-
-
 
 
 }
