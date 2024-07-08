@@ -18,16 +18,16 @@ public class Follow {
     private int id;
 
     @ManyToOne
-    private User followingUser;
+    private User user;
 
     @ManyToOne
-    private User followedUser;
+    private User follower;
 
     private Date createdAt;
 
-    public Follow(User followingUser, User followedUser) {
-        this.followingUser = followingUser;
-        this.followedUser = followedUser;
+    public Follow(User user, User follower) {
+        this.user = user;
+        this.follower = follower;
         this.createdAt = new Date();
     }
 }

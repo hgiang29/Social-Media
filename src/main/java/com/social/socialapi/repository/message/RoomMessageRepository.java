@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface RoomMessageRepository extends CrudRepository<RoomMessage, Integer> {
 
+    RoomMessage findById(int id);
 
 }

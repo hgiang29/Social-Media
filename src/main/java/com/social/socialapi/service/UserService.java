@@ -13,6 +13,8 @@ public interface UserService {
 
     UserViewDTO getUserDTOByEmail(String email);
 
+    UserViewDTO getUserViewDTOById(int userId);
+
     UserViewDTO register(UserCreationDTO userCreationDTO) throws EmailExistException, UsernameExistException;
 
 }
