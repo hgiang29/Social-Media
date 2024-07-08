@@ -13,4 +13,6 @@ public class UserViewDTO {
 
     private String lastName;
 
+    private String profile_pic_url;
+
 }
