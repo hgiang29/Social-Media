@@ -98,6 +98,7 @@ public class PostServiceImpl implements PostService {
     public Post ConvertPostDTOtoEntity(PostDTO postDTO) {
         Post post = new Post();
         post.setId(postDTO.getId());
+//        post.setUser(postDTO.getPostUserId());
         post.setContent(postDTO.getContent());
         post.setPost_img(postDTO.getPost_img());
         post.setPost_video(postDTO.getPost_video());

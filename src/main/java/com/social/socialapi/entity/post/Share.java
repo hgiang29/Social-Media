@@ -1,5 +1,6 @@
 package com.social.socialapi.entity.post;
 
+import com.social.socialapi.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,11 @@ public class Share {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-//    @Column(name = "share_user_id")
-//    private int user_id;
+
+    @OneToOne
+    @JoinColumn(name = "share_user_id", nullable = false)
+    private User user;
+
     @ManyToOne
     @JoinColumn(name = "share_post_id", nullable = true)
     private Post post;

@@ -1,6 +1,7 @@
 package com.social.socialapi.dto.inputdto;
 
 
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,5 @@ public class ShareDTO {
     private PostDTO post;
     private Date createdAt;
     private Date updateAt;
+    private UserViewDTO shareUser;
 }

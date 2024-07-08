@@ -1,5 +1,6 @@
 package com.social.socialapi.dto.inputdto;
 
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,10 @@ public class CommentDTO {
     private int parentId;
     private String content;
     private PostDTO post;
-    private CommentDTO  parent;
+    private CommentDTO parent;
     //      private User user;
     private Date createdAt;
-//    private Date updateAt;
+    //    private Date updateAt;
+    private UserViewDTO commentUser;
+
 }

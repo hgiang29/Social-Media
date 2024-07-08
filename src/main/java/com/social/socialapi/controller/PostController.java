@@ -4,11 +4,13 @@ import com.social.socialapi.dto.inputdto.CommentDTO;
 import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.inputdto.ShareDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,7 @@ public class PostController {
         postDTO.setLikeDTOs(likeDTOList);
         List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
         postDTO.setShareDTOS(shareDTOList);
+
         return ResponseEntity.ok(postDTO);
     }
 
@@ -109,6 +112,8 @@ public class PostController {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(post.getId());
         postDTO.setContent(post.getContent());
+        postDTO.setPostUserId(post.getUser().getId());
+        postDTO.setPostUser(post.getUser().ConvertEntitytoDTO());
         postDTO.setPost_img(post.getPost_img());
         postDTO.setPost_video(post.getPost_video());
         return postDTO;
