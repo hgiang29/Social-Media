@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
 
     public PostDTO addPost(PostDTO postDTO) {
 
-        postDTO.setPostUser(userRepository.findById(postDTO.getPostUserId()).orElse(new User()).ConvertEntitytoDTO());
+        postDTO.setPostUser(userRepository.findById(postDTO.getPostUserId()).ConvertEntitytoDTO());
         Post post = postDTO.ConvertDTOtoEntity();
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
