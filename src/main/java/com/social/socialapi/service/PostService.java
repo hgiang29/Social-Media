@@ -13,7 +13,7 @@ public interface PostService {
 
     public List<Post> getAllPosts();
 
-    public void addPost(PostDTO postDTO);
+    public PostDTO addPost(PostDTO postDTO);
 
     public Post getPostById(int id);
 
