@@ -1,16 +1,13 @@
-package com.social.socialapi.repository;
+package com.social.socialapi.repository.post;
 
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Integer> {

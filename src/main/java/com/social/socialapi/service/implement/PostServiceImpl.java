@@ -1,28 +1,23 @@
 package com.social.socialapi.service.implement;
 
-import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
-import com.social.socialapi.entity.User;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.exceptions.FuncErrorException;
-import com.social.socialapi.repository.PostRepository;
+import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.FileUploadService;
 import com.social.socialapi.service.PostService;
-import com.social.socialapi.utils.FileUploadUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

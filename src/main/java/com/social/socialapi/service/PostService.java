@@ -1,17 +1,12 @@
 package com.social.socialapi.service;
 
-import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
-import com.social.socialapi.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface PostService {
