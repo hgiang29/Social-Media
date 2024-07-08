@@ -20,7 +20,7 @@ public class FollowController {
     @PostMapping("/follow/{userId}")
     public ResponseEntity<String> followUser(@PathVariable int userId) throws UserNotFoundException {
         followService.followUser(3, userId);
-        return ResponseEntity.ok("Create follow relationship successfully");
+        return ResponseEntity.ok("Create follow relationship successfully!");
     }
 
     @GetMapping("/follow/follower/{userId}")

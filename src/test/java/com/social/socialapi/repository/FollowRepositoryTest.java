@@ -37,8 +37,7 @@ public class FollowRepositoryTest {
 
     @Test
     void getFollowerList() {
-        User user = userRepository.findById(3).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(3)));
+        User user = userRepository.findById(3);
         List<User> followers = followRepository.getFollowerList(user);
 
         System.out.println(followers);
