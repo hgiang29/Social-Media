@@ -33,7 +33,9 @@ public class ShareServiceImp implements ShareService {
 
     public Share addShare(ShareDTO ShareDTO) {
         PostDTO postDTO = postRepository.findById(ShareDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
+
 //        ShareDTO.setPost(postDTO);
+
         UserViewDTO userDTO = userRepository.findById(ShareDTO.getUser_id()).ConvertEntitytoDTO();
         ShareDTO.setShareUser(userDTO);
         Share share = ShareDTO.ConvertShareDTOtoEntity();

@@ -1,6 +1,7 @@
 package com.social.socialapi.service;
 
 import com.social.socialapi.dto.inputdto.UserCreationDTO;
+import com.social.socialapi.dto.inputdto.UserEditDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.exceptions.UsernameExistException;
@@ -14,6 +15,8 @@ public interface UserService {
     UserViewDTO getUserDTOByEmail(String email);
 
     UserViewDTO getUserViewDTOById(int userId);
+
+    UserViewDTO editUser(UserEditDTO userEditDTO);
 
     UserViewDTO register(UserCreationDTO userCreationDTO) throws EmailExistException, UsernameExistException;
 
