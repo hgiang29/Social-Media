@@ -7,9 +7,7 @@ import com.social.socialapi.service.CommentService;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CommentController {
@@ -24,6 +22,11 @@ public class CommentController {
         CommentDTO responseCommentDTO = commentService.getComment(Comment.getId()).ConvertCommentEntityToDTO();
         return ResponseEntity.ok(responseCommentDTO);
     }
+    @DeleteMapping("comment/{commentId}")
+    public ResponseEntity<String> deletecomment(@PathVariable int commentId) {
 
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok("Deleted");
+    }
 
 }

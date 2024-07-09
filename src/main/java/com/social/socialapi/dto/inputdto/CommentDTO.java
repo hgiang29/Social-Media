@@ -22,6 +22,7 @@ public class CommentDTO {
     private String content;
 //    private PostDTO post;
     private CommentDTO parent;
+    private long Likes;
     private Date createdAt;
     private UserViewDTO commentUser;
     

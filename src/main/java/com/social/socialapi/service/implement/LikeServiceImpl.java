@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class LikeServiceImpl implements LikeService {
@@ -61,6 +62,9 @@ public class LikeServiceImpl implements LikeService {
 
     public Like getLike(int likeId) {
         return likeRepository.findById(likeId).orElse(new Like());
+    }
+    public List<Like> getLikesByComment(int commentId){
+        return likeRepository.getLikesByComment(commentId );
     }
 
 

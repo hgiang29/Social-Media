@@ -6,9 +6,7 @@ import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LikeController {
@@ -29,5 +27,13 @@ public class LikeController {
         Like like = likeService.addLike(likeDTO);
         LikeDTO responseLikeDTO = likeService.getLike(like.getId()).ConvertLikeEntityToDTO();
         return ResponseEntity.ok(responseLikeDTO);
+    }
+
+    @DeleteMapping("like/{likeId}")
+    public ResponseEntity<String> deletelike(@PathVariable int likeId) {
+
+        likeService.deleteLike(likeId);
+
+        return ResponseEntity.ok("Deleted");
     }
 }
