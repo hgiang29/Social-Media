@@ -85,7 +85,11 @@ public class PostController {
 
         return ResponseEntity.ok("Deleted");
     }
-
+    @GetMapping("/posts/{userId}")
+    public ResponseEntity<List<PostDTO>> getAllPost(@PathVariable int userId) {
+        // cách để chuyển từ List<Post> sang List<PostDTO>
+        return ResponseEntity.ok(postService.getAllPostsByUserId(userId).stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList()));
+    }
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {

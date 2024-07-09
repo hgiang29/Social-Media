@@ -53,6 +53,9 @@ public class PostServiceImpl implements PostService {
             return new ArrayList<>();
         }
     }
+    public List<Post> getAllPostsByUserId(int UserId){
+        return (List<Post>) postRepository.findAllByUserId(UserId);
+    }
 
     public PostDTO addPost(PostDTO postDTO) {
 
