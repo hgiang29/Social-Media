@@ -1,6 +1,7 @@
 package com.social.socialapi.dto.outputdto;
 
 import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,10 @@ public class UserViewDTO {
     private String username;
 
     private String bio;
+
+    private Gender gender;
+
+    private String email;
 
     public User ConvertDTOtoEntity() {
         User user = new User();
