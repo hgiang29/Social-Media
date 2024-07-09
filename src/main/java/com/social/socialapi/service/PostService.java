@@ -12,6 +12,7 @@ import java.util.List;
 public interface PostService {
 
     public List<Post> getAllPosts();
+    public List<Post> getAllPostsByUserId(int UserId);
 
     public PostDTO addPost(PostDTO postDTO);
 

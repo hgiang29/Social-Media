@@ -20,7 +20,7 @@ public class CommentDTO {
     private int parentId;
     private int userId;
     private String content;
-    private PostDTO post;
+//    private PostDTO post;
     private CommentDTO parent;
     private Date createdAt;
     private UserViewDTO commentUser;
@@ -28,7 +28,7 @@ public class CommentDTO {
     public Comment ConvertCommentDTOtoEntity() {
         Comment comment = new Comment();
         comment.setId(id);
-        comment.setPost(post.ConvertDTOtoEntity());
+//        comment.setPost(post.ConvertDTOtoEntity());
         comment.setContent(content);
         comment.setParent(comment.getParent());
         comment.setUser(commentUser.ConvertDTOtoEntity());

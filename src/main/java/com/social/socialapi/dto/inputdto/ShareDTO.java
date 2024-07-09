@@ -20,14 +20,14 @@ public class ShareDTO {
     private int id;
     private int postId;
     private int user_id;
-    private PostDTO post;
+//    private PostDTO post;
     private Date createdAt;
     private Date updateAt;
     private UserViewDTO shareUser;
     public Share ConvertShareDTOtoEntity() {
         Share share = new Share();
         share.setId(id);
-        share.setPost(post.ConvertDTOtoEntity());
+//        share.setPost(post.ConvertDTOtoEntity());
         share.setUser(shareUser.ConvertDTOtoEntity());
         share.setCreatedAt(createdAt);
         share.setUpdateAt(updateAt);

@@ -25,7 +25,7 @@ public class Post {
 
     private String post_video;
     @OneToOne
-    @JoinColumn(name = "creator_user_id", nullable = false)
+    @JoinColumn(name = "creator_user_id", nullable = true)
     private User user;
 
     private Date createdAt;

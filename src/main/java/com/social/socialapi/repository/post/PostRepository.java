@@ -21,4 +21,7 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
 
     @Query("select comment from Comment comment where comment.post.id = :IdPost")
     List<Comment> showCommentPost (@Param("IdPost") int IdPost);
+
+    @Query("select post from Post post where post.user.id = :userId")
+    List<Post> findAllByUserId(@Param("userId") int userId);
 }

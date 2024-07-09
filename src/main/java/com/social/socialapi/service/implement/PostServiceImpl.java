@@ -2,13 +2,17 @@ package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
+import com.social.socialapi.entity.User;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.exceptions.FuncErrorException;
+import com.social.socialapi.repository.post.CommentRepository;
+import com.social.socialapi.repository.post.LikeRepository;
 import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.repository.UserRepository;
+import com.social.socialapi.repository.post.ShareRepository;
 import com.social.socialapi.service.FileUploadService;
 import com.social.socialapi.service.PostService;
 import jakarta.transaction.Transactional;
@@ -33,6 +37,12 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private LikeRepository likeRepository;
+    @Autowired
+    private ShareRepository shareRepository;
 
     public List<Post> getAllPosts() {
         try {
@@ -43,8 +53,13 @@ public class PostServiceImpl implements PostService {
             return new ArrayList<>();
         }
     }
+    public List<Post> getAllPostsByUserId(int UserId){
+        return (List<Post>) postRepository.findAllByUserId(UserId);
+    }
 
     public PostDTO addPost(PostDTO postDTO) {
+
+        postDTO.setPostUser(userRepository.findById(postDTO.getPostUserId()).ConvertEntitytoDTO());
         Post post = postDTO.ConvertDTOtoEntity();
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
@@ -72,6 +87,9 @@ public class PostServiceImpl implements PostService {
     }
 
     public void deletePost(int postId) {
+        commentRepository.deleteByPostId(postId);
+        likeRepository.deleteByPostId(postId);
+        shareRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
     }
 

@@ -18,7 +18,7 @@ public class LikeDTO {
     private int id;
     private int postId;
     private int userId;
-    private PostDTO post;
+//    private PostDTO post;
     private Date createdAt;
     private Date updateAt;
     private UserViewDTO likeUser;
@@ -26,8 +26,8 @@ public class LikeDTO {
     public Like ConvertLikeDTOtoEntity() {
         Like like = new Like();
         like.setId(id);
-        if(post!= null)
-        like.setPost(post.ConvertDTOtoEntity());
+//        if(post!= null)
+//        like.setPost(post.ConvertDTOtoEntity());
         if(likeUser != null)
         like.setUser(likeUser.ConvertDTOtoEntity());
         like.setCreatedAt(createdAt);
