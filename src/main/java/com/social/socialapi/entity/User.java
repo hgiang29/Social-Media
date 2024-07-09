@@ -35,7 +35,7 @@ public class User {
 
     private String bio;
 
-    private String profile_pic_url;
+    private String profile_pic_url = "https://cache.giaohangtietkiem.vn/d/390e481d413dd6c06b97f9430e5f6dbe.jpg";
 
     private Date createdAt;
 

@@ -1,5 +1,6 @@
 package com.social.socialapi.controller;
 
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
 import com.social.socialapi.exceptions.UserNotFoundException;
 import com.social.socialapi.service.FollowService;
@@ -24,20 +25,20 @@ public class FollowController {
     }
 
     @GetMapping("/follow/follower/{userId}")
-    public ResponseEntity<List<User>> getFollowersByUser(@PathVariable int userId) throws UserNotFoundException {
-        List<User> followers = followService.getUserFollowers(userId);
+    public ResponseEntity<List<UserViewDTO>> getFollowersByUser(@PathVariable int userId) throws UserNotFoundException {
+        List<UserViewDTO> followers = followService.getUserFollowers(userId);
         return ResponseEntity.ok(followers);
     }
 
     @GetMapping("/follow/following/{userId}")
-    public ResponseEntity<List<User>> getFollowingByUser(@PathVariable int userId) throws UserNotFoundException {
-        List<User> following = followService.getUserFollowing(userId);
+    public ResponseEntity<List<UserViewDTO>> getFollowingByUser(@PathVariable int userId) throws UserNotFoundException {
+        List<UserViewDTO> following = followService.getUserFollowing(userId);
         return ResponseEntity.ok(following);
     }
 
     @GetMapping("/follow/hello")
-    public ResponseEntity<List<User>> helloFollow() throws UserNotFoundException {
-        List<User> followers = followService.getUserFollowers(1);
+    public ResponseEntity<List<UserViewDTO>> helloFollow() throws UserNotFoundException {
+        List<UserViewDTO> followers = followService.getUserFollowers(1);
         return ResponseEntity.ok(followers);
     }
 

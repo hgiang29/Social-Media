@@ -1,5 +1,6 @@
 package com.social.socialapi.service;
 
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
 import com.social.socialapi.exceptions.UserNotFoundException;
 
@@ -9,9 +10,9 @@ public interface FollowService {
 
     void followUser(int userId, int followerId) throws UserNotFoundException;
 
-    List<User> getUserFollowers(int userId) throws UserNotFoundException;
+    List<UserViewDTO> getUserFollowers(int userId) throws UserNotFoundException;
 
-    List<User> getUserFollowing(int userId) throws UserNotFoundException;
+    List<UserViewDTO> getUserFollowing(int userId) throws UserNotFoundException;
 
     void unFollowUser(int userId, int followingId) throws UserNotFoundException;
 

@@ -17,4 +17,6 @@ public class UserViewDTO {
 
     private String bio;
 
+    private String username;
+
 }
