@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,7 +38,11 @@ public class Post {
         postDTO.setId(id);
         postDTO.setContent(content);
         postDTO.setPostUserId(user.getId());
-        postDTO.setPost_img(post_img);
+        if(post_img != null){
+            String[] postImgArray = post_img.split(";");
+            List<String> postImgList = Arrays.asList(postImgArray);
+            postDTO.setPost_imgs(postImgList);
+        }
         postDTO.setPost_video(post_video);
         postDTO.setPostUser(user.ConvertEntitytoDTO());
         return postDTO;

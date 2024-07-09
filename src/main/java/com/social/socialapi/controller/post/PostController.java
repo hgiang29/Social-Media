@@ -34,11 +34,13 @@ public class PostController {
     public ResponseEntity<List<PostDTO>> getAllPost() {
         // cách để chuyển từ List<Post> sang List<PostDTO>
         List<PostDTO> postDTOS = postService.getAllPosts().stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList());
-        for (PostDTO postDTO : postDTOS) {
+        for(PostDTO postDTO : postDTOS) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
-            postDTO.setLikeDTOs(likeDTOList);
+            postDTO.setLikeDTOs(likeDTOList.size());
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
-            postDTO.setShareDTOS(shareDTOList);
+            postDTO.setShareDTOS(shareDTOList.size());
+            List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
+            postDTO.setCommentDTOS(commentDTOList.size());
         }
         return ResponseEntity.ok(postDTOS);
     }
@@ -53,10 +55,11 @@ public class PostController {
         }
         PostDTO postDTO = post.ConvertPostToPostDTO();
         List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
-        postDTO.setLikeDTOs(likeDTOList);
+        postDTO.setLikeDTOs(likeDTOList.size());
         List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
-        postDTO.setShareDTOS(shareDTOList);
-
+        postDTO.setShareDTOS(shareDTOList.size());
+        List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
+        postDTO.setCommentDTOS(commentDTOList.size());
         return ResponseEntity.ok(postDTO);
     }
 
@@ -67,8 +70,8 @@ public class PostController {
 //        }
 
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(String content, Integer userId, @RequestPart final MultipartFile file) {
-        PostDTO ResponsePostDTO = postService.addPost(content, userId, file);
+    public ResponseEntity<PostDTO> addPost(String content, Integer userId,  final List<MultipartFile> files) {
+        PostDTO ResponsePostDTO = postService.addPost(content,userId, files);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
@@ -94,20 +97,20 @@ public class PostController {
 
         return ResponseEntity.ok("Deleted");
     }
-
     @GetMapping("/posts/{userId}")
     public ResponseEntity<List<PostDTO>> getAllPost(@PathVariable int userId) {
         // cách để chuyển từ List<Post> sang List<PostDTO>
         List<PostDTO> postDTOS = postService.getAllPostsByUserId(userId).stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList());
-        for (PostDTO postDTO : postDTOS) {
+        for(PostDTO postDTO : postDTOS) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
-            postDTO.setLikeDTOs(likeDTOList);
+            postDTO.setLikeDTOs(likeDTOList.size());
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
-            postDTO.setShareDTOS(shareDTOList);
+            postDTO.setShareDTOS(shareDTOList.size());
+            List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
+            postDTO.setCommentDTOS(commentDTOList.size());
         }
         return ResponseEntity.ok(postDTOS);
     }
-
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
