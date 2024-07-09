@@ -17,17 +17,18 @@ import java.util.List;
 public class PostDTO {
     private int id;
     private String content;
-    private String post_img;
+    private List<String> post_imgs;
     private int postUserId;
     private String post_video;
-    private List<LikeDTO> likeDTOs;
+    private long likeDTOs;
     private UserViewDTO postUser;
-    private List<ShareDTO> shareDTOS;
+    private long shareDTOS;
+    private long commentDTOS;
     public Post ConvertDTOtoEntity(){
         Post post = new Post();
         post.setId(id);
         post.setContent(content);
-        post.setPost_img(post_img);
+        post.setPost_img(String.join(";", post_imgs));
         post.setPost_video(post_video);
         post.setUser(postUser.ConvertDTOtoEntity());
         return post;
