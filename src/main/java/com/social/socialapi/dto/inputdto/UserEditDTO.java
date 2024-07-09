@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserEditDTO {
 
-    private int userId;
+    private int id;
 
     private String firstName;
 

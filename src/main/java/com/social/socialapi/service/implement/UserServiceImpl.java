@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserViewDTO editUser(UserEditDTO userEditDTO) {
-        User user = userRepository.findById(userEditDTO.getUserId());
+        User user = userRepository.findById(userEditDTO.getId());
         user.setFirstName(userEditDTO.getFirstName());
         user.setLastName(userEditDTO.getLastName());
         user.setBio(userEditDTO.getBio());
