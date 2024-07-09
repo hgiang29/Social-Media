@@ -20,10 +20,10 @@ public class PostDTO {
     private List<String> post_imgs;
     private int postUserId;
     private String post_video;
-    private List<LikeDTO> likeDTOs;
+    private long likeDTOs;
     private UserViewDTO postUser;
-    private List<ShareDTO> shareDTOS;
-    private List<CommentDTO> commentDTOS;
+    private long shareDTOS;
+    private long commentDTOS;
     public Post ConvertDTOtoEntity(){
         Post post = new Post();
         post.setId(id);
