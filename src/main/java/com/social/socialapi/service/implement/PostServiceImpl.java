@@ -57,12 +57,16 @@ public class PostServiceImpl implements PostService {
         return (List<Post>) postRepository.findAllByUserId(UserId);
     }
 
-    public PostDTO addPost(PostDTO postDTO) {
-
-        postDTO.setPostUser(userRepository.findById(postDTO.getPostUserId()).ConvertEntitytoDTO());
-        Post post = postDTO.ConvertDTOtoEntity();
+    public PostDTO addPost(String content, Integer userId, final MultipartFile file) {
+        User user = userRepository.findById(userId).get();
+        Post post = new Post();
+        post.setContent(content);
+        post.setUser(user);
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
+        String fileName = file.getOriginalFilename();
+        final CloudinaryResponseDTO responseDTO = this.fileUploadService.uploadFile(file, fileName);
+        post.setPost_img(responseDTO.getUrl());
         return postRepository.save(post).ConvertPostToPostDTO();
     }
 

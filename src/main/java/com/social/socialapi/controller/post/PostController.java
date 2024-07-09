@@ -66,8 +66,8 @@ public class PostController {
 //        }
 
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(@RequestBody PostDTO postDTO) {
-        PostDTO ResponsePostDTO = postService.addPost(postDTO);
+    public ResponseEntity<PostDTO> addPost(String content, Integer userId, @RequestPart final MultipartFile file) {
+        PostDTO ResponsePostDTO = postService.addPost(content,userId, file);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
