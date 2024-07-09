@@ -2,11 +2,13 @@ package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.UserCreationDTO;
 import com.social.socialapi.dto.inputdto.UserEditDTO;
+import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
 import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.exceptions.UsernameExistException;
 import com.social.socialapi.repository.UserRepository;
+import com.social.socialapi.service.FileUploadService;
 import com.social.socialapi.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,11 +30,14 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper mapper;
 
-    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper) {
+    private final FileUploadService fileUploadService;
+
+    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, FileUploadService fileUploadService) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
+        this.fileUploadService = fileUploadService;
     }
 
     public void authenticate(String username, String password) throws Exception {
@@ -57,6 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserViewDTO editUser(UserEditDTO userEditDTO) {
         User user = userRepository.findById(userEditDTO.getId());
         user.setFirstName(userEditDTO.getFirstName());
@@ -64,8 +71,12 @@ public class UserServiceImpl implements UserService {
         user.setBio(userEditDTO.getBio());
         user.setGender(userEditDTO.getGender());
 
-        userRepository.save(user);
+        if (userEditDTO.getFile() != null) {
+            CloudinaryResponseDTO cloudinaryResponse = fileUploadService.uploadFile(userEditDTO.getFile(), userEditDTO.getFile().getOriginalFilename());
+            user.setProfile_pic_url(cloudinaryResponse.getUrl());
+        }
 
+        userRepository.save(user);
         return mapper.map(user, UserViewDTO.class);
     }
 
