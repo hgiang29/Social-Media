@@ -14,7 +14,7 @@ public interface PostService {
     public List<Post> getAllPosts();
     public List<Post> getAllPostsByUserId(int UserId);
 
-    public PostDTO addPost(PostDTO postDTO);
+    public PostDTO addPost(String content, Integer userId, final MultipartFile file);
 
     public Post getPostById(int id);
 
