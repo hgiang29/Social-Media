@@ -1,12 +1,15 @@
 package com.social.socialapi.service.implement;
 
 import com.social.socialapi.dto.inputdto.LikeDTO;
+import com.social.socialapi.dto.inputdto.PostDTO;
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.post.LikeRepository;
+import com.social.socialapi.repository.post.PostRepository;
+import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +23,16 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     public PostService postService;
     @Autowired
-    private ModelMapper mapper;
+    private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Like addLike(LikeDTO likeDTO) {
-        Like like = ConvertLikeDTOtoEntity(likeDTO);
+        PostDTO postDTO = postRepository.findById(likeDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
+        likeDTO.setPost(postDTO);
+        UserViewDTO userDTO = userRepository.findById(likeDTO.getUserId()).ConvertEntitytoDTO();
+        likeDTO.setLikeUser(userDTO);
+        Like like = likeDTO.ConvertLikeDTOtoEntity();
         like.setCreatedAt(Date.from(Instant.now()));
         like.setUpdatedAt(Date.from(Instant.now()));
         return likeRepository.save(like);
@@ -42,11 +51,5 @@ public class LikeServiceImpl implements LikeService {
         return likeRepository.findById(likeId).orElse(new Like());
     }
 
-    public Like ConvertLikeDTOtoEntity(LikeDTO likeDTO) {
-        Like like = new Like();
-        Post post = postService.getPostById(likeDTO.getPostId());
-        like.setId(likeDTO.getId());
-        like.setPost(post);
-        return like;
-    }
+
 }

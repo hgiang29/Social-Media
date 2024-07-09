@@ -1,5 +1,6 @@
 package com.social.socialapi.entity;
 
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.enums.EmailStatus;
 import com.social.socialapi.entity.enums.Gender;
 import jakarta.persistence.*;
@@ -84,5 +85,13 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
+    }
+
+    public UserViewDTO ConvertEntitytoDTO(){
+        UserViewDTO userDTO = new UserViewDTO();
+        userDTO.setId(id);
+        userDTO.setFirstName(firstName);
+        userDTO.setLastName(lastName);
+        return userDTO;
     }
 }
