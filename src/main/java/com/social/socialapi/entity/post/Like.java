@@ -41,7 +41,7 @@ public class Like {
         likeDTO.setCommentId(comment.getId());
 //        likeDTO.setComment(comment.ConvertCommentEntityToDTO());
         likeDTO.setUserId(user.getId());
-        if(createdAt != null)
+        if(post != null)
         likeDTO.setPostId(post.getId());
         likeDTO.setLikeUser(user.ConvertEntitytoDTO());
 //        likeDTO.setPost(post.ConvertPostToPostDTO());
