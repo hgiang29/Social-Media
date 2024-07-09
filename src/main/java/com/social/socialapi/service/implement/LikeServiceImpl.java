@@ -3,7 +3,9 @@ package com.social.socialapi.service.implement;
 import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
+
 import com.social.socialapi.entity.post.Comment;
+
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.post.CommentRepository;
@@ -12,7 +14,6 @@ import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,6 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     public PostService postService;
     @Autowired
-    private ModelMapper mapper;
-    @Autowired
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
@@ -35,6 +34,7 @@ public class LikeServiceImpl implements LikeService {
     private CommentRepository commentRepository;
 
     public Like addLike(LikeDTO likeDTO) {
+
 //        likeDTO.setPost(postDTO);
 
         UserViewDTO userDTO = userRepository.findById(likeDTO.getUserId()).ConvertEntitytoDTO();

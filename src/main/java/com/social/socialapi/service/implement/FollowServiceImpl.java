@@ -1,13 +1,15 @@
 package com.social.socialapi.service.implement;
 
+import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.Follow;
 import com.social.socialapi.entity.User;
-import com.social.socialapi.exceptions.UserNotFoundException;
 import com.social.socialapi.repository.FollowRepository;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.FollowService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,9 +18,12 @@ public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
-    public FollowServiceImpl(FollowRepository followRepository, UserRepository userRepository) {
+    private final ModelMapper mapper;
+
+    public FollowServiceImpl(FollowRepository followRepository, UserRepository userRepository, ModelMapper mapper) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -32,15 +37,29 @@ public class FollowServiceImpl implements FollowService {
 
 
     @Override
-    public List<User> getUserFollowers(int userId) {
+    public List<UserViewDTO> getUserFollowers(int userId) {
         User user = userRepository.findById(userId);
-        return followRepository.getFollowerList(user);
+
+        List<User> followers = followRepository.getFollowingList(user);
+        List<UserViewDTO> userViewDTOList = new ArrayList<>();
+        followers.forEach(follower -> {
+            userViewDTOList.add(mapper.map(followers, UserViewDTO.class));
+        });
+
+        return userViewDTOList;
     }
 
     @Override
-    public List<User> getUserFollowing(int userId) {
+    public List<UserViewDTO> getUserFollowing(int userId) {
         User user = userRepository.findById(userId);
-        return followRepository.getFollowingList(user);
+
+        List<User> followings = followRepository.getFollowerList(user);
+        List<UserViewDTO> userViewDTOList = new ArrayList<>();
+        followings.forEach(follower -> {
+            userViewDTOList.add(mapper.map(followings, UserViewDTO.class));
+        });
+
+        return userViewDTOList;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.social.socialapi.controller;
 
 import com.social.socialapi.dto.inputdto.UserCreationDTO;
+import com.social.socialapi.dto.inputdto.UserEditDTO;
 import com.social.socialapi.dto.inputdto.UserLoginDTO;
 import com.social.socialapi.dto.outputdto.UserProfileViewDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
@@ -61,6 +62,11 @@ public class UserController {
 
         UserProfileViewDTO userProfileViewDTO = new UserProfileViewDTO(userViewDTO, totalFollowers, totalFollowings);
         return ResponseEntity.ok(userProfileViewDTO);
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<UserViewDTO> editUser(@RequestBody UserEditDTO userEditDTO) {
+        return ResponseEntity.ok(userService.editUser(userEditDTO));
     }
 
 

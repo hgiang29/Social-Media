@@ -3,7 +3,6 @@ package com.social.socialapi.service.implement;
 import com.social.socialapi.dto.inputdto.CommentDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.User;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.post.CommentRepository;
@@ -34,7 +33,9 @@ public class CommentServiceImpl implements CommentService {
 
     public Comment addComment(CommentDTO CommentDTO) {
         PostDTO postDTO = postRepository.findById(CommentDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
+
 //        CommentDTO.setPost(postDTO);
+
         UserViewDTO userDTO = userRepository.findById(CommentDTO.getUserId()).ConvertEntitytoDTO();
         Post post = postRepository.findById(CommentDTO.getPostId()).orElse(new Post());
         CommentDTO.setCommentUser(userDTO);
