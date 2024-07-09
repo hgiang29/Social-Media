@@ -23,4 +23,11 @@ public class LikeController {
         LikeDTO responseLikeDTO = likeService.getLike(like.getId()).ConvertLikeEntityToDTO();
         return ResponseEntity.ok(responseLikeDTO);
     }
+
+    @PostMapping("/comment/like")
+    public ResponseEntity<LikeDTO> addLikeComment(@RequestBody LikeDTO likeDTO) {
+        Like like = likeService.addLike(likeDTO);
+        LikeDTO responseLikeDTO = likeService.getLike(like.getId()).ConvertLikeEntityToDTO();
+        return ResponseEntity.ok(responseLikeDTO);
+    }
 }

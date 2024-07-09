@@ -23,6 +23,10 @@ public class Like {
     @JoinColumn(name = "post_id", nullable = true)
     private Post post;
 
+    @ManyToOne
+    @JoinColumn(name = "comment_id", nullable = true)
+    private Comment comment;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -33,7 +37,11 @@ public class Like {
     public LikeDTO ConvertLikeEntityToDTO(){
         LikeDTO likeDTO = new LikeDTO();
         likeDTO.setId(id);
+        if(comment != null)
+        likeDTO.setCommentId(comment.getId());
+//        likeDTO.setComment(comment.ConvertCommentEntityToDTO());
         likeDTO.setUserId(user.getId());
+        if(createdAt != null)
         likeDTO.setPostId(post.getId());
         likeDTO.setLikeUser(user.ConvertEntitytoDTO());
 //        likeDTO.setPost(post.ConvertPostToPostDTO());

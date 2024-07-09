@@ -17,11 +17,13 @@ import java.util.Date;
 public class LikeDTO {
     private int id;
     private int postId;
+    private int commentId;
     private int userId;
 //    private PostDTO post;
     private Date createdAt;
     private Date updateAt;
     private UserViewDTO likeUser;
+    private CommentDTO comment;
 
     public Like ConvertLikeDTOtoEntity() {
         Like like = new Like();

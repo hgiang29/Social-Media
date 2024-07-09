@@ -4,8 +4,10 @@ import com.social.socialapi.dto.inputdto.LikeDTO;
 import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.repository.post.CommentRepository;
 import com.social.socialapi.repository.post.LikeRepository;
 import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.repository.UserRepository;
@@ -30,16 +32,21 @@ public class LikeServiceImpl implements LikeService {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     public Like addLike(LikeDTO likeDTO) {
         PostDTO postDTO = postRepository.findById(likeDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
 //        likeDTO.setPost(postDTO);
 
         UserViewDTO userDTO = userRepository.findById(likeDTO.getUserId()).ConvertEntitytoDTO();
-        Post post = postRepository.findById(likeDTO.getPostId()).orElse(new Post());
+
         likeDTO.setLikeUser(userDTO);
         Like like = likeDTO.ConvertLikeDTOtoEntity();
+        Post post = postRepository.findById(likeDTO.getPostId()).orElse(new Post());
         like.setPost(post);
+        Comment comment = commentRepository.findById(likeDTO.getCommentId()).orElse(new Comment());
+        like.setComment(comment);
         like.setCreatedAt(Date.from(Instant.now()));
         like.setUpdatedAt(Date.from(Instant.now()));
         return likeRepository.save(like);

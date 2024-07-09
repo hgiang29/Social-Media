@@ -23,6 +23,7 @@ public class PostDTO {
     private List<LikeDTO> likeDTOs;
     private UserViewDTO postUser;
     private List<ShareDTO> shareDTOS;
+    private List<CommentDTO> commentDTOS;
     public Post ConvertDTOtoEntity(){
         Post post = new Post();
         post.setId(id);

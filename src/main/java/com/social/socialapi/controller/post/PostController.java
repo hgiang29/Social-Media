@@ -38,6 +38,8 @@ public class PostController {
             postDTO.setLikeDTOs(likeDTOList);
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
             postDTO.setShareDTOS(shareDTOList);
+            List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
+            postDTO.setCommentDTOS(commentDTOList);
         }
         return ResponseEntity.ok(postDTOS);
     }
@@ -55,7 +57,8 @@ public class PostController {
         postDTO.setLikeDTOs(likeDTOList);
         List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
         postDTO.setShareDTOS(shareDTOList);
-
+        List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
+        postDTO.setCommentDTOS(commentDTOList);
         return ResponseEntity.ok(postDTO);
     }
 
@@ -66,7 +69,7 @@ public class PostController {
 //        }
 
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(String content, Integer userId, @RequestPart final List<MultipartFile> files) {
+    public ResponseEntity<PostDTO> addPost(String content, Integer userId,  final List<MultipartFile> files) {
         PostDTO ResponsePostDTO = postService.addPost(content,userId, files);
         return ResponseEntity.ok(ResponsePostDTO);
     }
@@ -102,6 +105,8 @@ public class PostController {
             postDTO.setLikeDTOs(likeDTOList);
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
             postDTO.setShareDTOS(shareDTOList);
+            List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
+            postDTO.setCommentDTOS(commentDTOList);
         }
         return ResponseEntity.ok(postDTOS);
     }
