@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin
@@ -65,7 +66,8 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<UserViewDTO> editUser(@RequestBody UserEditDTO userEditDTO) {
+    public ResponseEntity<UserViewDTO> editUser(@RequestBody UserEditDTO userEditDTO, @RequestPart MultipartFile file) {
+        userEditDTO.setFile(file);
         return ResponseEntity.ok(userService.editUser(userEditDTO));
     }
 
