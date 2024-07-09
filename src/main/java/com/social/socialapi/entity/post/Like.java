@@ -36,7 +36,7 @@ public class Like {
         likeDTO.setUserId(user.getId());
         likeDTO.setPostId(post.getId());
         likeDTO.setLikeUser(user.ConvertEntitytoDTO());
-        likeDTO.setPost(post.ConvertPostToPostDTO());
+//        likeDTO.setPost(post.ConvertPostToPostDTO());
         return likeDTO;
     }
 }

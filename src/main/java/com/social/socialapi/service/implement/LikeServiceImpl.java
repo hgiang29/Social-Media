@@ -33,7 +33,7 @@ public class LikeServiceImpl implements LikeService {
 
     public Like addLike(LikeDTO likeDTO) {
         PostDTO postDTO = postRepository.findById(likeDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
-        likeDTO.setPost(postDTO);
+//        likeDTO.setPost(postDTO);
         UserViewDTO userDTO = userRepository.findById(likeDTO.getUserId()).ConvertEntitytoDTO();
         likeDTO.setLikeUser(userDTO);
         Like like = likeDTO.ConvertLikeDTOtoEntity();

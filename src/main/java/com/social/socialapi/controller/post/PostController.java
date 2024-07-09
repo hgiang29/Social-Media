@@ -12,6 +12,7 @@ import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +32,14 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<List<PostDTO>> getAllPost() {
         // cách để chuyển từ List<Post> sang List<PostDTO>
-        return ResponseEntity.ok(postService.getAllPosts().stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList()));
+        List<PostDTO> postDTOS = postService.getAllPosts().stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList());
+        for(PostDTO postDTO : postDTOS) {
+            List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
+            postDTO.setLikeDTOs(likeDTOList);
+            List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
+            postDTO.setShareDTOS(shareDTOList);
+        }
+        return ResponseEntity.ok(postDTOS);
     }
 
     @GetMapping("/post/{postId}")
@@ -88,7 +96,14 @@ public class PostController {
     @GetMapping("/posts/{userId}")
     public ResponseEntity<List<PostDTO>> getAllPost(@PathVariable int userId) {
         // cách để chuyển từ List<Post> sang List<PostDTO>
-        return ResponseEntity.ok(postService.getAllPostsByUserId(userId).stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList()));
+        List<PostDTO> postDTOS = postService.getAllPostsByUserId(userId).stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList());
+        for(PostDTO postDTO : postDTOS) {
+            List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
+            postDTO.setLikeDTOs(likeDTOList);
+            List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
+            postDTO.setShareDTOS(shareDTOList);
+        }
+        return ResponseEntity.ok(postDTOS);
     }
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
