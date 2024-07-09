@@ -32,7 +32,6 @@ public class CommentServiceImpl implements CommentService {
     private UserRepository userRepository;
 
     public Comment addComment(CommentDTO CommentDTO) {
-        PostDTO postDTO = postRepository.findById(CommentDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
 
 //        CommentDTO.setPost(postDTO);
 

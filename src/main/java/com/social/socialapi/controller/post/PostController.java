@@ -33,8 +33,12 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<List<PostDTO>> getAllPost() {
         // cách để chuyển từ List<Post> sang List<PostDTO>
-        List<PostDTO> postDTOS = postService.getAllPosts().stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList());
-        for(PostDTO postDTO : postDTOS) {
+        List<Post> posts = postService.getAllPosts();
+        List<PostDTO> postDTOs = new ArrayList<>();
+        for (Post post : posts) {
+            postDTOs.add(post.ConvertPostToPostDTO());
+        }
+        for(PostDTO postDTO : postDTOs) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
             postDTO.setLikeDTOs(likeDTOList.size());
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
@@ -42,7 +46,7 @@ public class PostController {
             List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
             postDTO.setCommentDTOS(commentDTOList.size());
         }
-        return ResponseEntity.ok(postDTOS);
+        return ResponseEntity.ok(postDTOs);
     }
 
     @GetMapping("/post/{postId}")
