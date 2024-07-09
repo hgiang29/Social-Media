@@ -37,8 +37,10 @@ public class CommentServiceImpl implements CommentService {
 //        CommentDTO.setPost(postDTO);
 
         UserViewDTO userDTO = userRepository.findById(CommentDTO.getUserId()).ConvertEntitytoDTO();
+        Post post = postRepository.findById(CommentDTO.getPostId()).orElse(new Post());
         CommentDTO.setCommentUser(userDTO);
         Comment comment = CommentDTO.ConvertCommentDTOtoEntity();
+        comment.setPost(post);
         comment.setCreatedAt(Date.from(Instant.now()));
         return commentRepository.save(comment);
     }
