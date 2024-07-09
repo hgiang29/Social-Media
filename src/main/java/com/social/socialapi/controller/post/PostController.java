@@ -9,6 +9,7 @@ import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.repository.post.PostRepository;
+import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,8 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private PostRepository postRepository;
 
@@ -141,7 +144,10 @@ public class PostController {
         List<Comment> Comments = postService.getCommentsByPostId(postId);
         List<CommentDTO> CommentDTOS = new ArrayList<>();
         for (Comment comment : Comments) {
-            CommentDTOS.add(comment.ConvertCommentEntityToDTO());
+            List<Like> likes =likeService.getLikesByComment(comment.getId());
+            CommentDTO commentDTO =comment.ConvertCommentEntityToDTO();
+            commentDTO.setLikes(likes.size());
+            CommentDTOS.add(commentDTO);
         }
         return CommentDTOS;
     }
