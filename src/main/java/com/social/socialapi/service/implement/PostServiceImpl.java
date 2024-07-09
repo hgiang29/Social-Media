@@ -65,12 +65,13 @@ public class PostServiceImpl implements PostService {
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
         String postImg = "";
-        for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename();
-            final CloudinaryResponseDTO responseDTO = this.fileUploadService.uploadFile(file, fileName);
-            postImg += responseDTO.getUrl()+ ";";
+        if(files != null ) {
+            for (MultipartFile file : files) {
+                String fileName = file.getOriginalFilename();
+                final CloudinaryResponseDTO responseDTO = this.fileUploadService.uploadFile(file, fileName);
+                postImg += responseDTO.getUrl() + ";";
+            }
         }
-
         post.setPost_img(postImg);
         return postRepository.save(post).ConvertPostToPostDTO();
     }
