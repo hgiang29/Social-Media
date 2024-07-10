@@ -1,8 +1,8 @@
-package com.social.socialapi.repository;
+package com.social.socialapi.repository.post;
 
 import com.social.socialapi.entity.User;
-import com.social.socialapi.entity.enums.Gender;
-import jakarta.persistence.EntityNotFoundException;
+import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,22 +12,21 @@ import org.springframework.test.annotation.Rollback;
 @DataJpaTest
 @Rollback(value = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositoryTest {
+public class PostRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
 
-    @Test
-    void createUser() {
-        User user = new User("Nguyen Van", "B", Gender.Female, "nguyenvanc@gmail.com", "abcde", "abc123");
-        userRepository.save(user);
-    }
+    @Autowired
+    PostRepository postRepository;
 
     @Test
-    void findUserById() {
-        User user = userRepository.findById(3);
+    void createPost() {
+        User user = userRepository.findById(4);
+        Post post = new Post("first post", user);
 
-        System.out.println(user);
+        postRepository.save(post);
     }
+
 
 }

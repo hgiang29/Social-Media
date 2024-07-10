@@ -8,16 +8,16 @@ import java.util.List;
 
 public interface FollowService {
 
-    void followUser(int userId, int followerId) throws UserNotFoundException;
+    void followUser(int userId, int followerId);
 
-    List<UserViewDTO> getUserFollowers(int userId) throws UserNotFoundException;
+    List<UserViewDTO> getUserFollowers(int userId);
 
-    List<UserViewDTO> getUserFollowing(int userId) throws UserNotFoundException;
+    List<UserViewDTO> getUserFollowing(int userId);
 
-    void unFollowUser(int userId, int followingId) throws UserNotFoundException;
+    void unFollowUser(int userId, int followingId);
 
-    int getTotalNumberOfFollowers(int userId) throws UserNotFoundException;
+    int getTotalNumberOfFollowers(int userId);
 
-    int getTotalNumberOfFollowings(int userId) throws UserNotFoundException;
+    int getTotalNumberOfFollowings(int userId);
 
 }

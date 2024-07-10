@@ -3,10 +3,12 @@ package com.social.socialapi.service.implement;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.Follow;
 import com.social.socialapi.entity.User;
+import com.social.socialapi.events.FollowedEvent;
 import com.social.socialapi.repository.FollowRepository;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.FollowService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,10 +22,13 @@ public class FollowServiceImpl implements FollowService {
 
     private final ModelMapper mapper;
 
-    public FollowServiceImpl(FollowRepository followRepository, UserRepository userRepository, ModelMapper mapper) {
+    private final ApplicationEventPublisher eventPublisher;
+
+    public FollowServiceImpl(FollowRepository followRepository, UserRepository userRepository, ModelMapper mapper, ApplicationEventPublisher eventPublisher) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -33,6 +38,8 @@ public class FollowServiceImpl implements FollowService {
         Follow followRelationship = new Follow(follower, user);
 
         followRepository.save(followRelationship);
+
+        eventPublisher.publishEvent(new FollowedEvent(this, followRelationship.getId(), followRelationship.getFollower().getId()));
     }
 
 
@@ -43,7 +50,7 @@ public class FollowServiceImpl implements FollowService {
         List<User> followers = followRepository.getFollowingList(user);
         List<UserViewDTO> userViewDTOList = new ArrayList<>();
         followers.forEach(follower -> {
-            userViewDTOList.add(mapper.map(followers, UserViewDTO.class));
+            userViewDTOList.add(mapper.map(follower, UserViewDTO.class));
         });
 
         return userViewDTOList;
@@ -55,8 +62,8 @@ public class FollowServiceImpl implements FollowService {
 
         List<User> followings = followRepository.getFollowerList(user);
         List<UserViewDTO> userViewDTOList = new ArrayList<>();
-        followings.forEach(follower -> {
-            userViewDTOList.add(mapper.map(followings, UserViewDTO.class));
+        followings.forEach(following -> {
+            userViewDTOList.add(mapper.map(following, UserViewDTO.class));
         });
 
         return userViewDTOList;
