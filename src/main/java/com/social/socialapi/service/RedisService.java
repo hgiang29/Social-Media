@@ -5,6 +5,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class RedisService {
     @Autowired
@@ -20,5 +22,8 @@ public class RedisService {
 
     public void delete(String key) {
         redisTemplate.delete(key);
+    }
+    public void setExpire(String key, long timeout, TimeUnit unit) {
+        redisTemplate.expire(key, timeout, unit);
     }
 }
