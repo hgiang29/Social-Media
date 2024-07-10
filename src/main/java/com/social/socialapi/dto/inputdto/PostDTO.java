@@ -24,6 +24,8 @@ public class PostDTO {
     private UserViewDTO postUser;
     private long shareDTOS;
     private long commentDTOS;
+    private Date createdAt;
+    private Date updatedAt;
     public Post ConvertDTOtoEntity(){
         Post post = new Post();
         post.setId(id);
