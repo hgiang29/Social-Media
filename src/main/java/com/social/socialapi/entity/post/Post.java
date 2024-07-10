@@ -22,8 +22,6 @@ public class Post {
     private int id;
 
     private String content;
-    @Column(name = "is_liked")
-    private Boolean isLiked;
 
     private String post_img;
 
@@ -46,7 +44,6 @@ public class Post {
             List<String> postImgList = Arrays.asList(postImgArray);
             postDTO.setPost_imgs(postImgList);
         }
-        postDTO.setLiked(isLiked);
         postDTO.setPost_video(post_video);
         postDTO.setPostUser(user.ConvertEntitytoDTO());
         postDTO.setCreatedAt(createdAt);

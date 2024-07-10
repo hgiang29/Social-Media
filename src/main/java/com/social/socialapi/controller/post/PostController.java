@@ -78,9 +78,14 @@ public class PostController {
 //
 //        }
 
+//    @PostMapping("/post")
+//    public ResponseEntity<PostDTO> addPost(String content, Integer userId,  final List<MultipartFile> files) {
+//        PostDTO ResponsePostDTO = postService.addPost(content,userId, files);
+//        return ResponseEntity.ok(ResponsePostDTO);
+//    }
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(String content, Integer userId,  final List<MultipartFile> files) {
-        PostDTO ResponsePostDTO = postService.addPost(content,userId, files);
+    public ResponseEntity<PostDTO> addPost(String content, Integer userId) {
+        PostDTO ResponsePostDTO = postService.addPost(content,userId);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
