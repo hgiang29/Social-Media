@@ -31,7 +31,6 @@ public class PostDTO {
     public Post ConvertDTOtoEntity(){
         Post post = new Post();
         post.setId(id);
-        post.setIsLiked(isLiked);
         post.setContent(content);
         post.setPost_img(String.join(";", post_imgs));
         post.setPost_video(post_video);

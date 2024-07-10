@@ -16,6 +16,8 @@ public interface PostService {
 
     public PostDTO addPost(String content, Integer userId, final List<MultipartFile> files);
 
+    public PostDTO addPost(String content, Integer userId);
+
     public Post getPostById(int id);
 
     public void uploadImage(final Integer id, final MultipartFile file);
