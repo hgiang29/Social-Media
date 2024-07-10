@@ -60,8 +60,9 @@ public class UserController {
         UserViewDTO userViewDTO = userService.getUserViewDTOById(userId);
         int totalFollowers = followService.getTotalNumberOfFollowers(userId);
         int totalFollowings = followService.getTotalNumberOfFollowings(userId);
+        boolean isFollow = followService.isFollowUser(userId);
 
-        UserProfileViewDTO userProfileViewDTO = new UserProfileViewDTO(userViewDTO, totalFollowers, totalFollowings);
+        UserProfileViewDTO userProfileViewDTO = new UserProfileViewDTO(userViewDTO, totalFollowers, totalFollowings, isFollow);
         return ResponseEntity.ok(userProfileViewDTO);
     }
 

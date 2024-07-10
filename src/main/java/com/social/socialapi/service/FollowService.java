@@ -14,10 +14,12 @@ public interface FollowService {
 
     List<UserViewDTO> getUserFollowing(int userId);
 
-    void unFollowUser(int userId, int followingId);
+    void unFollowUser(int userId, int followerId);
 
     int getTotalNumberOfFollowers(int userId);
 
     int getTotalNumberOfFollowings(int userId);
+
+    boolean isFollowUser(int userId);
 
 }

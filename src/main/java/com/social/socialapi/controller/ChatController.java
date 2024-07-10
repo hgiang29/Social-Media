@@ -22,6 +22,11 @@ public class ChatController {
         return message;
     }
 
-
+    @MessageMapping("/private-message")
+    public LiveMessage recMessage(@Payload LiveMessage message) {
+        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
+        System.out.println(message.toString());
+        return message;
+    }
 }
 

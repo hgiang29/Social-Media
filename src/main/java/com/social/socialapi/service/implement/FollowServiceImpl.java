@@ -35,7 +35,7 @@ public class FollowServiceImpl implements FollowService {
     public void followUser(int userId, int followerId) {
         User user = userRepository.findById(userId);
         User follower = userRepository.findById(followerId);
-        Follow followRelationship = new Follow(follower, user);
+        Follow followRelationship = new Follow(user, follower);
 
         followRepository.save(followRelationship);
 
@@ -70,11 +70,11 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void unFollowUser(int userId, int followingId) {
+    public void unFollowUser(int userId, int followerId) {
         User user = userRepository.findById(userId);
-        User following = userRepository.findById(followingId);
+        User follower = userRepository.findById(followerId);
 
-        Follow follow = followRepository.getFollowByUserAndFollower(following, user);
+        Follow follow = followRepository.getFollowByUserAndFollower(user, follower);
         followRepository.delete(follow);
     }
 
@@ -86,5 +86,13 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public int getTotalNumberOfFollowings(int userId) {
         return this.getUserFollowing(userId).size();
+    }
+
+    @Override
+    public boolean isFollowUser(int userId) {
+        User me = userRepository.findById(7);
+        User user = userRepository.findById(userId);
+
+        return followRepository.existsByUserAndFollower(user, me);
     }
 }

@@ -22,7 +22,7 @@ public class FollowController {
 
     @PostMapping("/follow/{userId}")
     public ResponseEntity<String> followUser(@PathVariable int userId) throws UserNotFoundException {
-        followService.followUser(7, userId);
+        followService.followUser(userId, 7);
         return ResponseEntity.ok("Create follow relationship successfully!");
     }
 
@@ -46,7 +46,7 @@ public class FollowController {
 
     @DeleteMapping("/follow/{userId}")
     public ResponseEntity<String> unFollowUser(@PathVariable int userId) throws UserNotFoundException {
-        followService.unFollowUser(7, userId);
+        followService.unFollowUser(userId, 7);
         return ResponseEntity.ok("unfollow successfully");
 
     }

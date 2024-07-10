@@ -19,4 +19,6 @@ public interface FollowRepository extends CrudRepository<Follow, Integer> {
 
     Follow getFollowById(int id);
 
+    boolean existsByUserAndFollower(User user, User follower);
+
 }

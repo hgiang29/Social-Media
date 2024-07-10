@@ -13,9 +13,12 @@ public class UserProfileViewDTO {
 
     private int totalFollowings;
 
-    public UserProfileViewDTO(UserViewDTO userInfo, int totalFollowers, int totalFollowings) {
+    private boolean isFollow;
+
+    public UserProfileViewDTO(UserViewDTO userInfo, int totalFollowers, int totalFollowings, boolean isFollow) {
         this.userInfo = userInfo;
         this.totalFollowers = totalFollowers;
         this.totalFollowings = totalFollowings;
+        this.isFollow = isFollow;
     }
 }
