@@ -45,6 +45,8 @@ public class Post {
         }
         postDTO.setPost_video(post_video);
         postDTO.setPostUser(user.ConvertEntitytoDTO());
+        postDTO.setCreatedAt(createdAt);
+        postDTO.setUpdatedAt(updateAt);
         return postDTO;
     }
 }
