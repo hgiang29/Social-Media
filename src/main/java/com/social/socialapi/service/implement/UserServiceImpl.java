@@ -101,8 +101,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         String emailContent = "Register";
-        sendEmailService.sendEmail(user.getEmail(), emailContent , "Vui lòng xác thực email của" +
-                " tài khoản "+ user.getUsername());
+        sendEmailService.sendEmail(user.getEmail(), emailContent ,user);
         return mapper.map(user, UserViewDTO.class);
     }
 
