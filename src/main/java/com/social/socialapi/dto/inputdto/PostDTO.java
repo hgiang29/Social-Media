@@ -21,14 +21,17 @@ public class PostDTO {
     private int postUserId;
     private String post_video;
     private long likeDTOs;
+    private List<LikeDTO> listLikes;
     private UserViewDTO postUser;
     private long shareDTOS;
     private long commentDTOS;
+    private boolean isLiked;
     private Date createdAt;
     private Date updatedAt;
     public Post ConvertDTOtoEntity(){
         Post post = new Post();
         post.setId(id);
+        post.setIsLiked(isLiked);
         post.setContent(content);
         post.setPost_img(String.join(";", post_imgs));
         post.setPost_video(post_video);
