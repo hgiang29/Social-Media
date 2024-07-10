@@ -1,14 +1,16 @@
 package com.social.socialapi.controller.email;
 
+import com.social.socialapi.service.RedisService;
 import com.social.socialapi.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class EmailController {
     @Autowired
     private SendEmailService sendEmailService;
+    @Autowired
+    private RedisService redisService;
 
     @GetMapping("sendEmail")
     public String sendEmail() {
@@ -23,5 +25,20 @@ public class EmailController {
         sendEmailService.sendEmail("hieunm.hrt@gmail.com", emailContent , "Vui lòng xác thực email của" +
                 " tài khoản "+ "hieumai943");
         return "Email sent";
+    }
+
+    @PostMapping("/save")
+    public void save(@RequestParam String key, @RequestParam String value) {
+        redisService.save(key, value);
+    }
+
+    @GetMapping("/get")
+    public Object get(@RequestParam String key) {
+        return redisService.find(key);
+    }
+
+    @DeleteMapping("/delete")
+    public void delete(@RequestParam String key) {
+        redisService.delete(key);
     }
 }
