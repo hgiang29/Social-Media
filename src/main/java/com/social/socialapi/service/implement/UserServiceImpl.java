@@ -12,6 +12,7 @@ import com.social.socialapi.service.FileUploadService;
 import com.social.socialapi.service.SendEmailService;
 import com.social.socialapi.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -35,13 +36,16 @@ public class UserServiceImpl implements UserService {
 
     private final FileUploadService fileUploadService;
 
-    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, SendEmailService sendEmailService, FileUploadService fileUploadService) {
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, SendEmailService sendEmailService, FileUploadService fileUploadService,KafkaTemplate<String, String> kafkaTemplate) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
         this.sendEmailService = sendEmailService;
         this.fileUploadService = fileUploadService;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public void authenticate(String username, String password) throws Exception {
@@ -100,8 +104,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userCreationDTO.getPassword()));
 
         userRepository.save(user);
-        String emailContent = "Register";
-        sendEmailService.sendEmail(user.getEmail(), emailContent ,user);
+        kafkaTemplate.send("send-email", String.valueOf(user.getId()));
         return mapper.map(user, UserViewDTO.class);
     }
 
