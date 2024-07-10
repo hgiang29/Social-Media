@@ -34,11 +34,12 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = true)
     private Post post;
+
     public CommentDTO ConvertCommentEntityToDTO() {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(id);
         commentDTO.setContent(Content);
-        if(parent != null){
+        if (parent != null) {
             commentDTO.setParentId(parent.getId());
             commentDTO.setParent(parent.ConvertCommentEntityToDTO());
         }
@@ -47,5 +48,12 @@ public class Comment {
         commentDTO.setCommentUser(user.ConvertEntitytoDTO());
 //        commentDTO.setPost(post.ConvertPostToPostDTO());
         return commentDTO;
+    }
+
+    public Comment(User user, String content, Post post) {
+        this.user = user;
+        Content = content;
+        this.post = post;
+        createdAt = new Date();
     }
 }

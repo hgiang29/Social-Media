@@ -40,8 +40,8 @@ public class MessageController {
     }
 
     @GetMapping("/message/room/{roomMeasageId}/messages")
-    public ResponseEntity<List<List<MessageViewDTO>>> getMessageInRoomMessage(@PathVariable int roomMeasageId) {
-        List<List<MessageViewDTO>> messagesViewDTOList = messageService.listAllMessagesInRoomMessage(roomMeasageId);
+    public ResponseEntity<List<MessageViewDTO>> getMessageInRoomMessage(@PathVariable int roomMeasageId) {
+        List<MessageViewDTO> messagesViewDTOList = messageService.listAllMessagesInRoomMessage(roomMeasageId);
         return ResponseEntity.ok(messagesViewDTOList);
     }
 

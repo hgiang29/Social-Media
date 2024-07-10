@@ -7,9 +7,11 @@ import com.social.socialapi.service.FollowService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class FollowController {
 
     private final FollowService followService;
@@ -20,7 +22,7 @@ public class FollowController {
 
     @PostMapping("/follow/{userId}")
     public ResponseEntity<String> followUser(@PathVariable int userId) throws UserNotFoundException {
-        followService.followUser(3, userId);
+        followService.followUser(7, userId);
         return ResponseEntity.ok("Create follow relationship successfully!");
     }
 
@@ -44,7 +46,7 @@ public class FollowController {
 
     @DeleteMapping("/follow/{userId}")
     public ResponseEntity<String> unFollowUser(@PathVariable int userId) throws UserNotFoundException {
-        followService.unFollowUser(3, userId);
+        followService.unFollowUser(7, userId);
         return ResponseEntity.ok("unfollow successfully");
 
     }

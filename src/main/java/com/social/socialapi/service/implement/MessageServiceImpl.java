@@ -81,10 +81,8 @@ public class MessageServiceImpl implements MessageService {
         return "Tao tin nhan KHONG thanh cong";
     }
 
-    @Override
-    public List<List<MessageViewDTO>> listAllMessagesInRoomMessage(int roomMessageId) {
+    public List<List<MessageViewDTO>> listAllMessagesInRoomMessageByUser(int roomMessageId) {
         RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId);
-
 
         List<Message> messages = messageRepository.findAllByRoomMessageOrderByCreatedAt(roomMessage);
         List<MessageViewDTO> messageViewDTOList = new ArrayList<>();
@@ -94,6 +92,20 @@ public class MessageServiceImpl implements MessageService {
         });
 
         return groupMessagesByUserList(messageViewDTOList);
+    }
+
+    @Override
+    public List<MessageViewDTO> listAllMessagesInRoomMessage(int roomMessageId) {
+        RoomMessage roomMessage = roomMessageRepository.findById(roomMessageId);
+
+        List<Message> messages = messageRepository.findAllByRoomMessageOrderByCreatedAt(roomMessage);
+        List<MessageViewDTO> messageViewDTOList = new ArrayList<>();
+        messages.forEach(message -> {
+            MessageViewDTO messageViewDTO = mapper.map(message, MessageViewDTO.class);
+            messageViewDTOList.add(messageViewDTO);
+        });
+
+        return messageViewDTOList;
     }
 
     @Override

@@ -29,10 +29,8 @@ public class RoomMessageUserRepositoryTest {
 
     @Test
     void addParticipantToRoomMessage() {
-        User participant = userRepository.findById(3).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(3)));
-        RoomMessage roomMessage = roomMessageRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        User participant = userRepository.findById(3);
+        RoomMessage roomMessage = roomMessageRepository.findById(1);
         RoomMessageUser roomMessageUser = new RoomMessageUser(roomMessage, participant);
 
         roomMessageUserRepository.save(roomMessageUser);
@@ -40,8 +38,7 @@ public class RoomMessageUserRepositoryTest {
 
     @Test
     void listAllParticipantInRoomMessage() {
-        RoomMessage roomMessage = roomMessageRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        RoomMessage roomMessage = roomMessageRepository.findById(1);
 
         List<RoomMessageUser> roomMessageUserList = roomMessageUserRepository.findAllByRoomMessage(roomMessage);
         System.out.println(roomMessageUserList);
@@ -49,8 +46,7 @@ public class RoomMessageUserRepositoryTest {
 
     @Test
     void listAllRoomMessageByUser() {
-        User user = userRepository.findById(3).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(3)));
+        User user = userRepository.findById(3);
         List<RoomMessageUser> roomMessageUserList = roomMessageUserRepository.findAllByUser(user);
         roomMessageUserList.forEach(roomMessageUser -> System.out.println(roomMessageUser.getRoomMessage()));
     }

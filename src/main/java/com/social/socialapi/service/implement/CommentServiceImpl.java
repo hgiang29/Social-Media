@@ -5,6 +5,7 @@ import com.social.socialapi.dto.inputdto.PostDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.events.CommentAddedEvent;
 import com.social.socialapi.repository.post.CommentRepository;
 import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.repository.UserRepository;
@@ -12,6 +13,7 @@ import com.social.socialapi.service.CommentService;
 import com.social.socialapi.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -31,6 +33,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     public Comment addComment(CommentDTO CommentDTO) {
 
 //        CommentDTO.setPost(postDTO);
@@ -41,7 +46,11 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = CommentDTO.ConvertCommentDTOtoEntity();
         comment.setPost(post);
         comment.setCreatedAt(Date.from(Instant.now()));
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+
+        eventPublisher.publishEvent(new CommentAddedEvent(this, comment.getUser().getId(), comment.getId()));
+
+        return comment;
     }
 
     public void deleteComment(int CommentId) {

@@ -33,12 +33,13 @@ public class Post {
     private Date createdAt;
 
     private Date updateAt;
-    public PostDTO ConvertPostToPostDTO(){
+
+    public PostDTO ConvertPostToPostDTO() {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(id);
         postDTO.setContent(content);
         postDTO.setPostUserId(user.getId());
-        if(post_img != null){
+        if (post_img != null) {
             String[] postImgArray = post_img.split(";");
             List<String> postImgList = Arrays.asList(postImgArray);
             postDTO.setPost_imgs(postImgList);
@@ -48,5 +49,12 @@ public class Post {
         postDTO.setCreatedAt(createdAt);
         postDTO.setUpdatedAt(updateAt);
         return postDTO;
+    }
+
+    public Post(String content, User user) {
+        this.content = content;
+        this.user = user;
+        createdAt = new Date();
+        updateAt = new Date();
     }
 }

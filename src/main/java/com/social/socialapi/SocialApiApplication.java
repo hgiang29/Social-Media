@@ -1,7 +1,9 @@
 package com.social.socialapi;
 
+import com.social.socialapi.dto.outputdto.NotificationViewDTO;
 import com.social.socialapi.dto.outputdto.RecentMessageDTO;
 import com.social.socialapi.entity.message.Message;
+import com.social.socialapi.entity.notification.Notification;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

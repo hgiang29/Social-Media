@@ -23,8 +23,7 @@ public class RoomMessageRepositoryTest {
 
     @Test
     void createRoomMessage() {
-        User admin = userRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        User admin = userRepository.findById(1);
         System.out.println(admin);
 
         RoomMessage roomMessage = new RoomMessage("phong chat 1", admin);

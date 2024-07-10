@@ -19,7 +19,7 @@ public interface MessageService {
 
     String createMessage(MessageCreationDTO messageCreationDTO);
 
-    List<List<MessageViewDTO>> listAllMessagesInRoomMessage(int roomMessageId);
+    List<MessageViewDTO> listAllMessagesInRoomMessage(int roomMessageId);
 
     List<RoomMessage> findAllRoomMessageByUser(int userId);
 

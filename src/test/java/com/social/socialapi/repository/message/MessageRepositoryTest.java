@@ -32,10 +32,8 @@ public class MessageRepositoryTest {
 
     @Test
     void createMessage() {
-        User participant = userRepository.findById(3).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(3)));
-        RoomMessage roomMessage = roomMessageRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        User participant = userRepository.findById(3);
+        RoomMessage roomMessage = roomMessageRepository.findById(1);
 
         // check if user is in the chat room
         if (roomMessageUserRepository.findByRoomMessageAndUser(roomMessage, participant) != null) {
@@ -46,8 +44,7 @@ public class MessageRepositoryTest {
 
     @Test
     void listAllMessagesInChatRoom() {
-        RoomMessage roomMessage = roomMessageRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(1)));
+        RoomMessage roomMessage = roomMessageRepository.findById(1);
 
         List<Message> messageList = messageRepository.findAllByRoomMessageOrderByCreatedAt(roomMessage);
         System.out.println(messageList);
@@ -55,8 +52,7 @@ public class MessageRepositoryTest {
 
     @Test
     void findMostRecentMessage() {
-        RoomMessage roomMessage = roomMessageRepository.findById(1).
-                orElseThrow(() -> new EntityNotFoundException(String.valueOf(4)));
+        RoomMessage roomMessage = roomMessageRepository.findById(1);
 
         Message message = messageRepository.findMostRecentMessageByRoomMessage(roomMessage.getId());
         System.out.println(message.getCreatedAt());
