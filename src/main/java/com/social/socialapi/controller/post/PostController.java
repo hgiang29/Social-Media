@@ -44,6 +44,7 @@ public class PostController {
         for(PostDTO postDTO : postDTOs) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
             postDTO.setLikeDTOs(likeDTOList.size());
+            postDTO.setListLikes(likeDTOList);
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
             postDTO.setShareDTOS(shareDTOList.size());
             List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
@@ -63,6 +64,7 @@ public class PostController {
         PostDTO postDTO = post.ConvertPostToPostDTO();
         List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
         postDTO.setLikeDTOs(likeDTOList.size());
+        postDTO.setListLikes(likeDTOList);
         List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
         postDTO.setShareDTOS(shareDTOList.size());
         List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
@@ -111,6 +113,8 @@ public class PostController {
         for(PostDTO postDTO : postDTOS) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
             postDTO.setLikeDTOs(likeDTOList.size());
+            postDTO.setListLikes(likeDTOList);
+            
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
             postDTO.setShareDTOS(shareDTOList.size());
             List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
