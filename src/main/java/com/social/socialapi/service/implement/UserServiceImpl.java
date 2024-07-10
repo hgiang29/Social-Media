@@ -9,6 +9,7 @@ import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.exceptions.UsernameExistException;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.FileUploadService;
+import com.social.socialapi.service.SendEmailService;
 import com.social.socialapi.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,13 +31,16 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper mapper;
 
+    private final SendEmailService sendEmailService;
+
     private final FileUploadService fileUploadService;
 
-    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, FileUploadService fileUploadService) {
+    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, SendEmailService sendEmailService, FileUploadService fileUploadService) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
+        this.sendEmailService = sendEmailService;
         this.fileUploadService = fileUploadService;
     }
 
@@ -96,6 +100,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userCreationDTO.getPassword()));
 
         userRepository.save(user);
+        String emailContent = "Register";
+        sendEmailService.sendEmail(user.getEmail(), emailContent ,user);
         return mapper.map(user, UserViewDTO.class);
     }
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ShareServiceImp implements ShareService {
@@ -32,7 +33,6 @@ public class ShareServiceImp implements ShareService {
     private UserRepository userRepository;
 
     public Share addShare(ShareDTO ShareDTO) {
-        PostDTO postDTO = postRepository.findById(ShareDTO.getPostId()).orElse(new Post()).ConvertPostToPostDTO();
 
 //        ShareDTO.setPost(postDTO);
 
@@ -44,6 +44,9 @@ public class ShareServiceImp implements ShareService {
         share.setCreatedAt(Date.from(Instant.now()));
         share.setUpdateAt(Date.from(Instant.now()));
         return ShareRepository.save(share);
+    }
+    public List<Share> getShareByUserId(int userId){
+        return ShareRepository.getShareByUserId(userId);
     }
 
     public void deleteShare(int ShareId) {

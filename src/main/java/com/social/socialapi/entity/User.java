@@ -92,6 +92,8 @@ public class User {
         userDTO.setId(id);
         userDTO.setFirstName(firstName);
         userDTO.setLastName(lastName);
+        userDTO.setProfile_pic_url(profile_pic_url);
+        userDTO.setUsername(username);
         return userDTO;
     }
 }
