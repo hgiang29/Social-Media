@@ -20,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -177,11 +178,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void createLiveMessage(LiveMessage liveMessage, int roomId) {
-        User sender = userRepository.findByUsername(liveMessage.getSenderName());
-        MessageCreationDTO messageCreationDTO = new MessageCreationDTO(liveMessage.getMessage(), sender.getId(), roomId);
+    public MessageViewDTO getMessageViewDTOByMessageCreation(MessageCreationDTO messageCreationDTO) {
+        User user = userRepository.findById(messageCreationDTO.getSenderId());
+        UserViewDTO userViewDTO = mapper.map(user, UserViewDTO.class);
 
-        this.createMessage(messageCreationDTO);
+        // random message id
+        int messageId = 1023;
+        return new MessageViewDTO(messageId, messageCreationDTO.getMessageContent(), new Date(), userViewDTO);
+
     }
+
 
 }

@@ -1,10 +1,12 @@
 package com.social.socialapi.dto.inputdto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MessageCreationDTO {
     private String messageContent;
 

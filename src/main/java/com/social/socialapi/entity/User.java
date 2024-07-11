@@ -36,7 +36,7 @@ public class User {
 
     private String bio;
 
-    private String profile_pic_url = "https://cache.giaohangtietkiem.vn/d/390e481d413dd6c06b97f9430e5f6dbe.jpg";
+    private String profile_pic_url;
 
     private Date createdAt;
 
@@ -87,7 +87,7 @@ public class User {
                 '}';
     }
 
-    public UserViewDTO ConvertEntitytoDTO(){
+    public UserViewDTO ConvertEntitytoDTO() {
         UserViewDTO userDTO = new UserViewDTO();
         userDTO.setId(id);
         userDTO.setFirstName(firstName);

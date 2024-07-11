@@ -1,12 +1,14 @@
 package com.social.socialapi.dto.outputdto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MessageViewDTO {
 
     private int id;
@@ -17,4 +19,10 @@ public class MessageViewDTO {
 
     private UserViewDTO sender;
 
+    public MessageViewDTO(int id, String content, Date createdAt, UserViewDTO sender) {
+        this.id = id;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.sender = sender;
+    }
 }

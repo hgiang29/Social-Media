@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
 @CrossOrigin
 public class MessageController {
 
@@ -49,9 +48,9 @@ public class MessageController {
         return ResponseEntity.ok(body);
     }
 
-    @GetMapping("/message/room/{roomMeasageId}/messages")
-    public ResponseEntity<List<MessageViewDTO>> getMessageInRoomMessage(@PathVariable int roomMeasageId) {
-        List<MessageViewDTO> messagesViewDTOList = messageService.listAllMessagesInRoomMessage(roomMeasageId);
+    @GetMapping("/message/room/{roomMessageId}/messages")
+    public ResponseEntity<List<MessageViewDTO>> getMessageInRoomMessage(@PathVariable int roomMessageId) {
+        List<MessageViewDTO> messagesViewDTOList = messageService.listAllMessagesInRoomMessage(roomMessageId);
         return ResponseEntity.ok(messagesViewDTOList);
     }
 

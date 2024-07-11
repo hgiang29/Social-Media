@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @ToString
 public class LiveMessage {
-    private String senderName;
-    private String receiverName;
-    private String message;
+    private int senderId;
+    private int roomMessageId;
+    private String messageContent;
 }

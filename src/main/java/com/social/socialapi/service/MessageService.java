@@ -29,6 +29,7 @@ public interface MessageService {
     // List all the newest user inbox messages
     List<RecentMessageDTO> getRecentMessageList(int userId);
 
-    void createLiveMessage(LiveMessage liveMessage, int roomId);
+    // For websocket message
+    MessageViewDTO getMessageViewDTOByMessageCreation(MessageCreationDTO messageCreationDTO);
 
 }

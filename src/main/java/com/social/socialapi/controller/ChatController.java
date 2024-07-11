@@ -1,5 +1,7 @@
 package com.social.socialapi.controller;
 
+import com.social.socialapi.dto.inputdto.MessageCreationDTO;
+import com.social.socialapi.dto.outputdto.MessageViewDTO;
 import com.social.socialapi.entity.message.LiveMessage;
 import com.social.socialapi.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +24,15 @@ public class ChatController {
 
     @MessageMapping("/message/{chatRoom}")
     @SendTo("/room/{chatRoom}")
-    public LiveMessage receiveMessage(@Payload LiveMessage message, @DestinationVariable String chatRoom) {
+    public MessageViewDTO receiveMessage(@Payload MessageCreationDTO message, @DestinationVariable String chatRoom) {
         System.out.println("Received message in room " + chatRoom);
         // messageService.createLiveMessage(message, 1);
-        return message;
+        return messageService.getMessageViewDTOByMessageCreation(message);
     }
 
     @MessageMapping("/private-message")
     public LiveMessage recMessage(@Payload LiveMessage message) {
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getSenderId()), "/private", message);
         System.out.println(message.toString());
         return message;
     }
