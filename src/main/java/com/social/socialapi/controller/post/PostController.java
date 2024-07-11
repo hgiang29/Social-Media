@@ -1,9 +1,6 @@
 package com.social.socialapi.controller.post;
 
-import com.social.socialapi.dto.inputdto.CommentDTO;
-import com.social.socialapi.dto.inputdto.LikeDTO;
-import com.social.socialapi.dto.inputdto.PostDTO;
-import com.social.socialapi.dto.inputdto.ShareDTO;
+import com.social.socialapi.dto.inputdto.*;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
@@ -84,8 +81,8 @@ public class PostController {
 //        return ResponseEntity.ok(ResponsePostDTO);
 //    }
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(String content, Integer userId) {
-        PostDTO ResponsePostDTO = postService.addPost(content,userId);
+    public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost) {
+        PostDTO ResponsePostDTO = postService.addPost(addingPost.content,addingPost.userId);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
@@ -161,5 +158,5 @@ public class PostController {
         return CommentDTOS;
     }
 
-
 }
+
