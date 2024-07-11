@@ -5,6 +5,7 @@ import com.social.socialapi.dto.inputdto.UserEditDTO;
 import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.enums.EmailStatus;
 import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.exceptions.UsernameExistException;
 import com.social.socialapi.repository.UserRepository;
@@ -114,11 +115,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserViewDTO verifyEmail(String gmail, String Code) {
-         Object verifyCode =  redisService.find(gmail);
+    public UserViewDTO verifyEmail(int userId, String Code) {
+         User user = userRepository.findById(userId);
+         Object verifyCode =  redisService.find(user.getEmail());
          if(verifyCode.equals(Code)){
+             user.setEmailStatus(EmailStatus.Verified);
          }
-         return new UserViewDTO();
+        userRepository.save(user);
+        return mapper.map(user, UserViewDTO.class);
     }
 
 
