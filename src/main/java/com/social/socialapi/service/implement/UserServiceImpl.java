@@ -9,6 +9,7 @@ import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.exceptions.UsernameExistException;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.FileUploadService;
+import com.social.socialapi.service.RedisService;
 import com.social.socialapi.service.SendEmailService;
 import com.social.socialapi.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -36,15 +37,19 @@ public class UserServiceImpl implements UserService {
 
     private final FileUploadService fileUploadService;
 
+    private final RedisService redisService;
+
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, SendEmailService sendEmailService, FileUploadService fileUploadService,KafkaTemplate<String, String> kafkaTemplate) {
+    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, SendEmailService sendEmailService,
+                           FileUploadService fileUploadService,RedisService redisService ,KafkaTemplate<String, String> kafkaTemplate) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
         this.sendEmailService = sendEmailService;
         this.fileUploadService = fileUploadService;
+        this.redisService = redisService;
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -107,6 +112,15 @@ public class UserServiceImpl implements UserService {
         kafkaTemplate.send("send-email", String.valueOf(user.getId()));
         return mapper.map(user, UserViewDTO.class);
     }
+
+    @Override
+    public UserViewDTO verifyEmail(String gmail, String Code) {
+         Object verifyCode =  redisService.find(gmail);
+         if(verifyCode.equals(Code)){
+         }
+         return new UserViewDTO();
+    }
+
 
 
 }

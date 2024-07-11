@@ -71,5 +71,9 @@ public class UserController {
         return ResponseEntity.ok(userService.editUser(userEditDTO));
     }
 
+    @PostMapping("/user/verify")
+    public ResponseEntity<UserViewDTO> verifyEmail(String gmail,String code) throws UsernameExistException, EmailExistException {
+        return ResponseEntity.ok(userService.verifyEmail(gmail, code));
+    }
 
 }
