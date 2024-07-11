@@ -6,6 +6,7 @@ import com.social.socialapi.dto.inputdto.RoomMessageUserCreationDTO;
 import com.social.socialapi.dto.outputdto.MessageViewDTO;
 import com.social.socialapi.dto.outputdto.RecentMessageDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.entity.message.LiveMessage;
 import com.social.socialapi.entity.message.Message;
 import com.social.socialapi.entity.message.RoomMessage;
 
@@ -27,5 +28,7 @@ public interface MessageService {
 
     // List all the newest user inbox messages
     List<RecentMessageDTO> getRecentMessageList(int userId);
+
+    void createLiveMessage(LiveMessage liveMessage, int roomId);
 
 }

@@ -49,4 +49,10 @@ public class FollowRepositoryTest {
 
         System.out.println(followings);
     }
+
+    @Test
+    void listNotFollowUser() {
+        List<Integer> users = followRepository.getNotFollowUer(1);
+        System.out.println(users.size());
+    }
 }

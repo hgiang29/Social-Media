@@ -1,6 +1,7 @@
 package com.social.socialapi.controller;
 
 import com.social.socialapi.entity.message.LiveMessage;
+import com.social.socialapi.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,10 +16,15 @@ public class ChatController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @Autowired
+    private MessageService messageService;
+
+
     @MessageMapping("/message/{chatRoom}")
     @SendTo("/room/{chatRoom}")
     public LiveMessage receiveMessage(@Payload LiveMessage message, @DestinationVariable String chatRoom) {
         System.out.println("Received message in room " + chatRoom);
+        // messageService.createLiveMessage(message, 1);
         return message;
     }
 

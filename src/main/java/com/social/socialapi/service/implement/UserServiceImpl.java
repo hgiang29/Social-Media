@@ -18,9 +18,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,7 +46,7 @@ public class UserServiceImpl implements UserService {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, ModelMapper mapper, SendEmailService sendEmailService,
-                           FileUploadService fileUploadService,RedisService redisService ,KafkaTemplate<String, String> kafkaTemplate) {
+                           FileUploadService fileUploadService, RedisService redisService, KafkaTemplate<String, String> kafkaTemplate) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
@@ -115,12 +119,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserViewDTO verifyEmail(String gmail, String Code) {
-         Object verifyCode =  redisService.find(gmail);
-         if(verifyCode.equals(Code)){
-         }
-         return new UserViewDTO();
+        Object verifyCode = redisService.find(gmail);
+        if (verifyCode.equals(Code)) {
+        }
+        return new UserViewDTO();
     }
 
+    @Override
+    public int getUserIdByUserDetails(UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        User user = userRepository.findByEmail(email);
+
+        return user.getId();
+    }
+
+    @Override
+    public List<UserViewDTO> listAllUserExceptMe(int userId) {
+        List<User> userList = userRepository.listAllUserExceptMe(userId);
+
+        List<UserViewDTO> userViewDTOList = new ArrayList<>();
+        userList.forEach(user -> {
+            userViewDTOList.add(mapper.map(user, UserViewDTO.class));
+        });
+
+        return userViewDTOList;
+
+    }
 
 
 }

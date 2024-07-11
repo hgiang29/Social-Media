@@ -23,6 +23,7 @@ import com.social.socialapi.service.NotifierStrategy;
 import com.social.socialapi.utils.NotificationEntityTypeMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,8 +50,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final ModelMapper mapper;
 
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationObjectRepository notificationObjectRepository, Map<String, NotifierStrategy> notifierStrategyMap, CommentRepository commentRepository, UserRepository userRepository, FollowRepository followRepository, LikeRepository likeRepository, ModelMapper mapper) {
+
+    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationObjectRepository notificationObjectRepository, Map<String, NotifierStrategy> notifierStrategyMap, CommentRepository commentRepository, UserRepository userRepository, FollowRepository followRepository, LikeRepository likeRepository, ModelMapper mapper, SimpMessagingTemplate messagingTemplate) {
         this.notificationRepository = notificationRepository;
         this.notificationObjectRepository = notificationObjectRepository;
         this.notifierStrategyMap = notifierStrategyMap;
@@ -59,6 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
         this.followRepository = followRepository;
         this.likeRepository = likeRepository;
         this.mapper = mapper;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @EventListener
@@ -72,7 +76,8 @@ public class NotificationServiceImpl implements NotificationService {
         NotificationEntityType entityType = NotificationEntityType.COMMENT;
         List<Integer> notifierIds = notifierStrategyMap.get("commentNotifierStrategy").getNotifiers(comment);
 
-        createNotification(comment, commentId, senderId, notifierIds);
+        NotificationObject notificationObject = createNotification(comment, commentId, senderId, notifierIds);
+        sendLiveNotificationToNotifiers(notifierIds, notificationObject);
     }
 
     @EventListener
@@ -96,11 +101,12 @@ public class NotificationServiceImpl implements NotificationService {
         Like like = likeRepository.findById(likeId).get();
         List<Integer> notifierIds = notifierStrategyMap.get("likeNotifierStrategy").getNotifiers(like);
 
-        createNotification(like, likeId, senderId, notifierIds);
+        NotificationObject notificationObject = createNotification(like, likeId, senderId, notifierIds);
+        sendLiveNotificationToNotifiers(notifierIds, notificationObject);
     }
 
     @Override
-    public void createNotification(Object entity, int entityId, int senderId, List<Integer> recipientIdList) {
+    public NotificationObject createNotification(Object entity, int entityId, int senderId, List<Integer> recipientIdList) {
         User sender = userRepository.findById(senderId);
 
         NotificationEntityType notificationEntityType = NotificationEntityTypeMapper.getEntityType(entity);
@@ -112,6 +118,8 @@ public class NotificationServiceImpl implements NotificationService {
             Notification notification = new Notification(recipient, notificationObject);
             notificationRepository.save(notification);
         }
+
+        return notificationObject;
     }
 
     String generateNotificationContent(NotificationObject notificationObject) {
@@ -119,7 +127,18 @@ public class NotificationServiceImpl implements NotificationService {
         String action = notificationObject.getEntityType().name();
 
         return notificationObject.getSender().getFirstName() + " " + notificationObject.getSender().getLastName()
-                + " " + action + " your post";
+                + " " + action;
+    }
+
+    void sendLiveNotificationToNotifiers(List<Integer> notifiers, NotificationObject notificationObject) {
+
+        String noti = generateNotificationContent(notificationObject);
+
+        for (int notifier : notifiers) {
+            User user = userRepository.findById(notifier);
+            messagingTemplate.convertAndSendToUser(user.getUsername(), "/queue/private", noti);
+        }
+
     }
 
     @Override

@@ -22,4 +22,6 @@ public interface FollowService {
 
     boolean isFollowUser(int userId);
 
+    List<UserViewDTO> getNotFollowUser(int userId);
+
 }

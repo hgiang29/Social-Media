@@ -1,13 +1,14 @@
 package com.social.socialapi.controller;
 
 import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.User;
 import com.social.socialapi.exceptions.UserNotFoundException;
 import com.social.socialapi.service.FollowService;
+import com.social.socialapi.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,13 +17,17 @@ public class FollowController {
 
     private final FollowService followService;
 
-    public FollowController(FollowService service) {
+    private final UserService userService;
+
+    public FollowController(FollowService service, UserService userService) {
         this.followService = service;
+        this.userService = userService;
     }
 
     @PostMapping("/follow/{userId}")
-    public ResponseEntity<String> followUser(@PathVariable int userId) throws UserNotFoundException {
-        followService.followUser(userId, 7);
+    public ResponseEntity<String> followUser(@PathVariable int userId, @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
+        int meId = userService.getUserIdByUserDetails(userDetails);
+        followService.followUser(userId, meId);
         return ResponseEntity.ok("Create follow relationship successfully!");
     }
 
@@ -39,17 +44,27 @@ public class FollowController {
     }
 
     @GetMapping("/follow/hello")
-    public ResponseEntity<List<UserViewDTO>> helloFollow() throws UserNotFoundException {
-        List<UserViewDTO> followers = followService.getUserFollowers(1);
+    public ResponseEntity<List<UserViewDTO>> helloFollow(@AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
+        int meId = userService.getUserIdByUserDetails(userDetails);
+        List<UserViewDTO> followers = followService.getUserFollowers(meId);
         return ResponseEntity.ok(followers);
     }
 
     @DeleteMapping("/follow/{userId}")
-    public ResponseEntity<String> unFollowUser(@PathVariable int userId) throws UserNotFoundException {
-        followService.unFollowUser(userId, 7);
+    public ResponseEntity<String> unFollowUser(@PathVariable int userId, @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
+        int meId = userService.getUserIdByUserDetails(userDetails);
+        followService.unFollowUser(userId, meId);
         return ResponseEntity.ok("unfollow successfully");
 
     }
+
+
+    @GetMapping("/follow/recommend")
+    public ResponseEntity<List<UserViewDTO>> getUserFollowRecommend(@AuthenticationPrincipal UserDetails userDetails) {
+        int meId = userService.getUserIdByUserDetails(userDetails);
+        return ResponseEntity.ok(followService.getNotFollowUser(meId));
+    }
+//
 
 
 }

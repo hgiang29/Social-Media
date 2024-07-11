@@ -95,4 +95,17 @@ public class FollowServiceImpl implements FollowService {
 
         return followRepository.existsByUserAndFollower(user, me);
     }
+
+    @Override
+    public List<UserViewDTO> getNotFollowUser(int userId) {
+        List<Integer> userIdList = followRepository.getNotFollowUer(userId);
+        List<UserViewDTO> userViewDTOList = new ArrayList<>();
+
+        for (int id : userIdList) {
+            User user = userRepository.findById(id);
+            userViewDTOList.add(mapper.map(user, UserViewDTO.class));
+        }
+
+        return userViewDTOList;
+    }
 }

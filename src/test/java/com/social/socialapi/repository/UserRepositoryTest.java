@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
+
 @DataJpaTest
 @Rollback(value = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -28,6 +30,12 @@ public class UserRepositoryTest {
         User user = userRepository.findById(3);
 
         System.out.println(user);
+    }
+
+    @Test
+    void listAll() {
+        List<User> users = userRepository.listAllUserExceptMe(1);
+        System.out.println(users.size());
     }
 
 }

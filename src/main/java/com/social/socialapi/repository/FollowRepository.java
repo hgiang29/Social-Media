@@ -21,4 +21,7 @@ public interface FollowRepository extends CrudRepository<Follow, Integer> {
 
     boolean existsByUserAndFollower(User user, User follower);
 
+    @Query(value = "SELECT u.id FROM users u left join follow f on u.id = f.user_id and f.follower_id = :userId WHERE f.user_id IS NULL AND u.id != :userId LIMIT 10",
+            nativeQuery = true)
+    List<Integer> getNotFollowUer(int userId);
 }

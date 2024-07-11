@@ -7,22 +7,30 @@ import com.social.socialapi.dto.outputdto.MessageViewDTO;
 import com.social.socialapi.dto.outputdto.RecentMessageDTO;
 import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.service.MessageService;
+import com.social.socialapi.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+
+@CrossOrigin
 public class MessageController {
 
     private final MessageService messageService;
 
-    public MessageController(MessageService messageService) {
+    private final UserService userService;
+
+    public MessageController(MessageService messageService, UserService userService) {
         this.messageService = messageService;
+        this.userService = userService;
     }
 
     @PostMapping("/message/room")
-    public ResponseEntity<String> createMessageRoom(@RequestBody RoomMessageCreationDTO roomMessageCreationDTO) {
+    public ResponseEntity<String> createMessageRoom(@RequestBody RoomMessageCreationDTO roomMessageCreationDTO, @AuthenticationPrincipal UserDetails userDetails) {
         messageService.createRoomMessage(roomMessageCreationDTO);
         return ResponseEntity.ok("Tao nhom chat thanh cong");
     }
@@ -34,7 +42,9 @@ public class MessageController {
     }
 
     @PostMapping("/message")
-    public ResponseEntity<String> createMessage(@RequestBody MessageCreationDTO messageCreationDTO) {
+    public ResponseEntity<String> createMessage(@RequestBody MessageCreationDTO messageCreationDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        int userId = userService.getUserIdByUserDetails(userDetails);
+        messageCreationDTO.setSenderId(userId);
         String body = messageService.createMessage(messageCreationDTO);
         return ResponseEntity.ok(body);
     }
@@ -51,9 +61,10 @@ public class MessageController {
     }
 
     @GetMapping("/message/recent")
-    public ResponseEntity<List<RecentMessageDTO>> getRecentMessages() {
+    public ResponseEntity<List<RecentMessageDTO>> getRecentMessages(@AuthenticationPrincipal UserDetails userDetails) {
         // lay user id sau khi authenticate
-        return ResponseEntity.ok(messageService.getRecentMessageList(3));
+        int userId = userService.getUserIdByUserDetails(userDetails);
+        return ResponseEntity.ok(messageService.getRecentMessageList(userId));
     }
 
 

@@ -13,4 +13,10 @@ public class MessageCreationDTO {
     private int roomMessageId;
 
     private int replyMessageId;
+
+    public MessageCreationDTO(String messageContent, int senderId, int roomMessageId) {
+        this.messageContent = messageContent;
+        this.senderId = senderId;
+        this.roomMessageId = roomMessageId;
+    }
 }

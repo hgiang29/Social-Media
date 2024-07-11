@@ -7,6 +7,7 @@ import com.social.socialapi.dto.outputdto.UserViewDTO;
 import com.social.socialapi.entity.User;
 import com.social.socialapi.dto.inputdto.RoomMessageCreationDTO;
 import com.social.socialapi.dto.inputdto.RoomMessageUserCreationDTO;
+import com.social.socialapi.entity.message.LiveMessage;
 import com.social.socialapi.entity.message.Message;
 import com.social.socialapi.entity.message.RoomMessage;
 import com.social.socialapi.entity.message.RoomMessageUser;
@@ -173,6 +174,14 @@ public class MessageServiceImpl implements MessageService {
         });
 
         return recentMessageDTOList;
+    }
+
+    @Override
+    public void createLiveMessage(LiveMessage liveMessage, int roomId) {
+        User sender = userRepository.findByUsername(liveMessage.getSenderName());
+        MessageCreationDTO messageCreationDTO = new MessageCreationDTO(liveMessage.getMessage(), sender.getId(), roomId);
+
+        this.createMessage(messageCreationDTO);
     }
 
 }

@@ -8,8 +8,11 @@ import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
+import com.social.socialapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +31,7 @@ public class PostController {
     @Autowired
     private LikeService likeService;
     @Autowired
-    private PostRepository postRepository;
+    private UserService userService;
 
     @GetMapping("/posts")
     public ResponseEntity<List<PostDTO>> getAllPost() {
@@ -38,7 +41,7 @@ public class PostController {
         for (Post post : posts) {
             postDTOs.add(post.ConvertPostToPostDTO());
         }
-        for(PostDTO postDTO : postDTOs) {
+        for (PostDTO postDTO : postDTOs) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
             postDTO.setLikeDTOs(likeDTOList.size());
             postDTO.setListLikes(likeDTOList);
@@ -75,14 +78,16 @@ public class PostController {
 //
 //        }
 
-//    @PostMapping("/post")
+    //    @PostMapping("/post")
 //    public ResponseEntity<PostDTO> addPost(String content, Integer userId,  final List<MultipartFile> files) {
 //        PostDTO ResponsePostDTO = postService.addPost(content,userId, files);
 //        return ResponseEntity.ok(ResponsePostDTO);
 //    }
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost) {
-        PostDTO ResponsePostDTO = postService.addPost(addingPost.content,addingPost.userId);
+    public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost, @AuthenticationPrincipal UserDetails userDetails) {
+        addingPost.userId = userService.getUserIdByUserDetails(userDetails);
+
+        PostDTO ResponsePostDTO = postService.addPost(addingPost.content, addingPost.userId);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 
@@ -108,15 +113,16 @@ public class PostController {
 
         return ResponseEntity.ok("Deleted");
     }
+
     @GetMapping("/posts/{userId}")
     public ResponseEntity<List<PostDTO>> getAllPost(@PathVariable int userId) {
         // cách để chuyển từ List<Post> sang List<PostDTO>
         List<PostDTO> postDTOS = postService.getAllPostsByUserId(userId).stream().map(Post::ConvertPostToPostDTO).collect(Collectors.toList());
-        for(PostDTO postDTO : postDTOS) {
+        for (PostDTO postDTO : postDTOS) {
             List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
             postDTO.setLikeDTOs(likeDTOList.size());
             postDTO.setListLikes(likeDTOList);
-            
+
             List<ShareDTO> shareDTOList = getSharesForPost(postDTO.getId());
             postDTO.setShareDTOS(shareDTOList.size());
             List<CommentDTO> commentDTOList = getCommentsForPost(postDTO.getId());
@@ -124,6 +130,7 @@ public class PostController {
         }
         return ResponseEntity.ok(postDTOS);
     }
+
     // region: get Like, share , comment of Posts
     @GetMapping("/post/{postId}/likes")
     public List<LikeDTO> getLikesForPost(@PathVariable int postId) {
@@ -150,8 +157,8 @@ public class PostController {
         List<Comment> Comments = postService.getCommentsByPostId(postId);
         List<CommentDTO> CommentDTOS = new ArrayList<>();
         for (Comment comment : Comments) {
-            List<Like> likes =likeService.getLikesByComment(comment.getId());
-            CommentDTO commentDTO =comment.ConvertCommentEntityToDTO();
+            List<Like> likes = likeService.getLikesByComment(comment.getId());
+            CommentDTO commentDTO = comment.ConvertCommentEntityToDTO();
             commentDTO.setLikes(likes.size());
             CommentDTOS.add(commentDTO);
         }

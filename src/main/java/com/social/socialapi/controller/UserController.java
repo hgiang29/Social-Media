@@ -14,10 +14,14 @@ import com.social.socialapi.service.UserService;
 import com.social.socialapi.utils.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -73,8 +77,14 @@ public class UserController {
     }
 
     @PostMapping("/user/verify")
-    public ResponseEntity<UserViewDTO> verifyEmail(String gmail,String code) throws UsernameExistException, EmailExistException {
+    public ResponseEntity<UserViewDTO> verifyEmail(String gmail, String code) throws UsernameExistException, EmailExistException {
         return ResponseEntity.ok(userService.verifyEmail(gmail, code));
+    }
+
+    @GetMapping("/user/all")
+    public ResponseEntity<List<UserViewDTO>> getAllUsers(@AuthenticationPrincipal UserDetails userDetails) {
+        int userId = userService.getUserIdByUserDetails(userDetails);
+        return ResponseEntity.ok(userService.listAllUserExceptMe(userId));
     }
 
 }
