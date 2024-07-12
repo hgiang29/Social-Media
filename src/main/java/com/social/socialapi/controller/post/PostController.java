@@ -85,6 +85,7 @@ public class PostController {
     public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost) {
         List<MultipartFile> files = new ArrayList<MultipartFile>();
         for(String fileString : addingPost.fileString){
+            fileString = fileString.substring(fileString.indexOf(",")+1);
             files.add(addingPost.convert(fileString,"image.jpg"));
         }
         PostDTO ResponsePostDTO = postService.addPost(addingPost.content,addingPost.userId, files);
