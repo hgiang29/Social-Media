@@ -1,9 +1,9 @@
 package com.social.socialapi.service.implement.notification;
 
-import com.social.socialapi.dto.outputdto.NotificationViewDTO;
-import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.Follow;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.dto.response.NotificationViewDTO;
+import com.social.socialapi.dto.response.UserViewDTO;
+import com.social.socialapi.entity.user.Follow;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.enums.NotificationEntityType;
 import com.social.socialapi.entity.notification.Notification;
 import com.social.socialapi.entity.notification.NotificationObject;

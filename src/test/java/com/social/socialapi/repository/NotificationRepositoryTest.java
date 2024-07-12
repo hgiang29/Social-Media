@@ -1,6 +1,6 @@
 package com.social.socialapi.repository;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.enums.NotificationEntityType;
 import com.social.socialapi.entity.notification.Notification;
 import com.social.socialapi.entity.notification.NotificationObject;

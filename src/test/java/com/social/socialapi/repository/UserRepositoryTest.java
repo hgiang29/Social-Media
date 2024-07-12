@@ -1,8 +1,7 @@
 package com.social.socialapi.repository;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.enums.Gender;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

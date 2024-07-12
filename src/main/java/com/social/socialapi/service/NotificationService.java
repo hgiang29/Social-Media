@@ -1,8 +1,6 @@
 package com.social.socialapi.service;
 
-import com.social.socialapi.dto.outputdto.NotificationViewDTO;
-import com.social.socialapi.entity.User;
-import com.social.socialapi.entity.enums.NotificationEntityType;
+import com.social.socialapi.dto.response.NotificationViewDTO;
 import com.social.socialapi.entity.notification.NotificationObject;
 
 import java.util.List;

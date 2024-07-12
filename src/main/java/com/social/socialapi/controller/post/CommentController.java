@@ -1,7 +1,7 @@
 package com.social.socialapi.controller.post;
 
 
-import com.social.socialapi.dto.inputdto.CommentDTO;
+import com.social.socialapi.dto.request.CommentDTO;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.service.CommentService;
 import com.social.socialapi.service.PostService;

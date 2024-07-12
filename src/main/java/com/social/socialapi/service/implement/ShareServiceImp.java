@@ -1,9 +1,7 @@
 package com.social.socialapi.service.implement;
 
-import com.social.socialapi.dto.inputdto.PostDTO;
-import com.social.socialapi.dto.inputdto.ShareDTO;
-import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.dto.request.ShareDTO;
+import com.social.socialapi.dto.response.UserViewDTO;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.repository.post.PostRepository;
@@ -45,7 +43,8 @@ public class ShareServiceImp implements ShareService {
         share.setUpdateAt(Date.from(Instant.now()));
         return ShareRepository.save(share);
     }
-    public List<Share> getShareByUserId(int userId){
+
+    public List<Share> getShareByUserId(int userId) {
         return ShareRepository.getShareByUserId(userId);
     }
 

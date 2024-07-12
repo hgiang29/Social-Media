@@ -1,6 +1,6 @@
 package com.social.socialapi.service.implement.notification.strategy;
 
-import com.social.socialapi.entity.Follow;
+import com.social.socialapi.entity.user.Follow;
 import com.social.socialapi.service.NotifierStrategy;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.social.socialapi.service.implement.notification.strategy;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.FollowRepository;
 import com.social.socialapi.repository.post.PostRepository;

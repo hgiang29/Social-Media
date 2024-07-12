@@ -1,6 +1,6 @@
 package com.social.socialapi.repository.message;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.message.RoomMessage;
 import com.social.socialapi.entity.message.RoomMessageUser;
 import org.springframework.data.repository.CrudRepository;

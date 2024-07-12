@@ -1,8 +1,7 @@
 package com.social.socialapi.service.implement;
 
-import com.social.socialapi.dto.inputdto.CommentDTO;
-import com.social.socialapi.dto.inputdto.PostDTO;
-import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.dto.request.CommentDTO;
+import com.social.socialapi.dto.response.UserViewDTO;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.events.CommentAddedEvent;

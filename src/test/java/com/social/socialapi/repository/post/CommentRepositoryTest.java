@@ -1,6 +1,6 @@
 package com.social.socialapi.repository.post;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.repository.UserRepository;

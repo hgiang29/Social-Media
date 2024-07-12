@@ -1,8 +1,8 @@
 package com.social.socialapi.service.implement;
 
-import com.social.socialapi.dto.inputdto.PostDTO;
-import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.dto.request.PostDTO;
+import com.social.socialapi.dto.response.CloudinaryResponseDTO;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;

@@ -1,8 +1,6 @@
 package com.social.socialapi.service;
 
-import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.User;
-import com.social.socialapi.exceptions.UserNotFoundException;
+import com.social.socialapi.dto.response.UserViewDTO;
 
 import java.util.List;
 

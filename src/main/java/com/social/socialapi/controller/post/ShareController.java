@@ -1,8 +1,7 @@
 package com.social.socialapi.controller.post;
 
-import com.social.socialapi.dto.inputdto.PostDTO;
-import com.social.socialapi.dto.inputdto.ShareDTO;
-import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.dto.request.PostDTO;
+import com.social.socialapi.dto.request.ShareDTO;
 import com.social.socialapi.entity.post.Share;
 import com.social.socialapi.service.PostService;
 import com.social.socialapi.service.ShareService;
@@ -26,6 +25,7 @@ public class ShareController {
         ShareDTO responseShareDTO = shareService.getShare(share.getId()).ConvertShareEntityToDTO();
         return ResponseEntity.ok(responseShareDTO);
     }
+
     @GetMapping("/post/{userId}/user/shares")
     public List<PostDTO> getSharesForUser(@PathVariable int userId) {
         List<Share> shares = shareService.getShareByUserId(userId);

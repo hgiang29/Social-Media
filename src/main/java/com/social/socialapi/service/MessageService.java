@@ -1,13 +1,11 @@
 package com.social.socialapi.service;
 
-import com.social.socialapi.dto.inputdto.MessageCreationDTO;
-import com.social.socialapi.dto.inputdto.RoomMessageCreationDTO;
-import com.social.socialapi.dto.inputdto.RoomMessageUserCreationDTO;
-import com.social.socialapi.dto.outputdto.MessageViewDTO;
-import com.social.socialapi.dto.outputdto.RecentMessageDTO;
-import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.message.LiveMessage;
-import com.social.socialapi.entity.message.Message;
+import com.social.socialapi.dto.request.MessageCreationDTO;
+import com.social.socialapi.dto.request.RoomMessageCreationDTO;
+import com.social.socialapi.dto.request.RoomMessageUserCreationDTO;
+import com.social.socialapi.dto.response.MessageViewDTO;
+import com.social.socialapi.dto.response.RecentMessageDTO;
+import com.social.socialapi.dto.response.UserViewDTO;
 import com.social.socialapi.entity.message.RoomMessage;
 
 import java.util.List;

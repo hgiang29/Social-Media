@@ -1,10 +1,10 @@
 package com.social.socialapi.service.implement;
 
-import com.social.socialapi.dto.inputdto.UserCreationDTO;
-import com.social.socialapi.dto.inputdto.UserEditDTO;
-import com.social.socialapi.dto.outputdto.CloudinaryResponseDTO;
-import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.dto.request.UserCreationDTO;
+import com.social.socialapi.dto.request.UserEditDTO;
+import com.social.socialapi.dto.response.CloudinaryResponseDTO;
+import com.social.socialapi.dto.response.UserViewDTO;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.enums.EmailStatus;
 import com.social.socialapi.exceptions.EmailExistException;
 import com.social.socialapi.exceptions.UsernameExistException;

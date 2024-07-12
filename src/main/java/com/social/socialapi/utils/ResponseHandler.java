@@ -1,6 +1,6 @@
 package com.social.socialapi.utils;
 
-import com.social.socialapi.dto.outputdto.UserViewDTO;
+import com.social.socialapi.dto.response.UserViewDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package com.social.socialapi.entity.notification;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.enums.NotificationEntityType;
 import jakarta.persistence.*;
 import lombok.Getter;

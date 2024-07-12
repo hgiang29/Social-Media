@@ -1,6 +1,6 @@
 package com.social.socialapi.repository.notification;
 
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.entity.notification.Notification;
 import org.springframework.data.repository.CrudRepository;
 

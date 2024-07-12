@@ -1,6 +1,6 @@
 package com.social.socialapi.controller.post;
 
-import com.social.socialapi.dto.inputdto.LikeDTO;
+import com.social.socialapi.dto.request.LikeDTO;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;

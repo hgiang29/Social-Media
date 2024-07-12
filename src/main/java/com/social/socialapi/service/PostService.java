@@ -1,6 +1,6 @@
 package com.social.socialapi.service;
 
-import com.social.socialapi.dto.inputdto.PostDTO;
+import com.social.socialapi.dto.request.PostDTO;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
@@ -12,6 +12,7 @@ import java.util.List;
 public interface PostService {
 
     public List<Post> getAllPosts();
+
     public List<Post> getAllPostsByUserId(int UserId);
 
     public PostDTO addPost(String content, Integer userId, final List<MultipartFile> files);

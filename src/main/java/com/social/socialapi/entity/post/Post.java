@@ -1,7 +1,7 @@
 package com.social.socialapi.entity.post;
 
-import com.social.socialapi.dto.inputdto.PostDTO;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.dto.request.PostDTO;
+import com.social.socialapi.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

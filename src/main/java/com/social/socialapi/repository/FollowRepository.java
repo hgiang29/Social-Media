@@ -1,7 +1,7 @@
 package com.social.socialapi.repository;
 
-import com.social.socialapi.entity.Follow;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.entity.user.Follow;
+import com.social.socialapi.entity.user.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

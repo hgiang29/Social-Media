@@ -1,23 +1,18 @@
 package com.social.socialapi.controller.post;
 
-import com.social.socialapi.dto.inputdto.*;
+import com.social.socialapi.dto.request.*;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
-import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
 import com.social.socialapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,11 +82,11 @@ public class PostController {
     @PostMapping("/post")
     public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost) {
         List<MultipartFile> files = new ArrayList<MultipartFile>();
-        for(String fileString : addingPost.fileString){
-            fileString = fileString.substring(fileString.indexOf(",")+1);
-            files.add(addingPost.convert(fileString,"image.jpg"));
+        for (String fileString : addingPost.fileString) {
+            fileString = fileString.substring(fileString.indexOf(",") + 1);
+            files.add(addingPost.convert(fileString, "image.jpg"));
         }
-        PostDTO ResponsePostDTO = postService.addPost(addingPost.content,addingPost.userId, files);
+        PostDTO ResponsePostDTO = postService.addPost(addingPost.content, addingPost.userId, files);
         return ResponseEntity.ok(ResponsePostDTO);
     }
 

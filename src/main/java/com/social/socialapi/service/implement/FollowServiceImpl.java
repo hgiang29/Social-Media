@@ -1,8 +1,8 @@
 package com.social.socialapi.service.implement;
 
-import com.social.socialapi.dto.outputdto.UserViewDTO;
-import com.social.socialapi.entity.Follow;
-import com.social.socialapi.entity.User;
+import com.social.socialapi.dto.response.UserViewDTO;
+import com.social.socialapi.entity.user.Follow;
+import com.social.socialapi.entity.user.User;
 import com.social.socialapi.events.FollowedEvent;
 import com.social.socialapi.repository.FollowRepository;
 import com.social.socialapi.repository.UserRepository;
