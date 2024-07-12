@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,12 +85,16 @@ public class PostController {
 //        return ResponseEntity.ok(ResponsePostDTO);
 //    }
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost, @AuthenticationPrincipal UserDetails userDetails) {
-        addingPost.userId = userService.getUserIdByUserDetails(userDetails);
-
-        PostDTO ResponsePostDTO = postService.addPost(addingPost.content, addingPost.userId);
+    public ResponseEntity<PostDTO> addPost(@RequestBody AddingPostDTO addingPost) {
+        List<MultipartFile> files = new ArrayList<MultipartFile>();
+        for(String fileString : addingPost.fileString){
+            fileString = fileString.substring(fileString.indexOf(",")+1);
+            files.add(addingPost.convert(fileString,"image.jpg"));
+        }
+        PostDTO ResponsePostDTO = postService.addPost(addingPost.content,addingPost.userId, files);
         return ResponseEntity.ok(ResponsePostDTO);
     }
+
 
     @PostMapping("/post/image/{PostId}")
     public ResponseEntity<PostDTO> addImage(@PathVariable final Integer PostId, @RequestPart final MultipartFile file) {

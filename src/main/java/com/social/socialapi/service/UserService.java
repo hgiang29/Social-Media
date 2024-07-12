@@ -24,7 +24,7 @@ public interface UserService {
 
     UserViewDTO register(UserCreationDTO userCreationDTO) throws EmailExistException, UsernameExistException;
 
-    UserViewDTO verifyEmail(String gmail, String code);
+    UserViewDTO verifyEmail(int userId, String code);
 
     int getUserIdByUserDetails(UserDetails userDetails);
 
