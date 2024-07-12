@@ -8,6 +8,7 @@ import com.social.socialapi.entity.post.Comment;
 
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
+import com.social.socialapi.events.LikeAddedEvent;
 import com.social.socialapi.repository.post.CommentRepository;
 import com.social.socialapi.repository.post.LikeRepository;
 import com.social.socialapi.repository.post.PostRepository;
@@ -15,6 +16,7 @@ import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -34,6 +36,9 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     public Like addLike(LikeDTO likeDTO) {
 
 //        likeDTO.setPost(postDTO);
@@ -48,7 +53,12 @@ public class LikeServiceImpl implements LikeService {
         like.setComment(comment);
         like.setCreatedAt(Date.from(Instant.now()));
         like.setUpdatedAt(Date.from(Instant.now()));
-        return likeRepository.save(like);
+
+        likeRepository.save(like);
+
+        eventPublisher.publishEvent(new LikeAddedEvent(this, like.getId(), like.getPost().getUser().getId()));
+
+        return like;
     }
 
     public void deleteLike(int likeId) {
@@ -63,8 +73,9 @@ public class LikeServiceImpl implements LikeService {
     public Like getLike(int likeId) {
         return likeRepository.findById(likeId).orElse(new Like());
     }
-    public List<Like> getLikesByComment(int commentId){
-        return likeRepository.getLikesByComment(commentId );
+
+    public List<Like> getLikesByComment(int commentId) {
+        return likeRepository.getLikesByComment(commentId);
     }
 
 

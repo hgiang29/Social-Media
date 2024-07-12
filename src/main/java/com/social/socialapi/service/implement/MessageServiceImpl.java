@@ -63,7 +63,7 @@ public class MessageServiceImpl implements MessageService {
         this.addRoomMessageParticipant(roomMessageUserCreationDTO);
 
         // system  user create first message
-        MessageCreationDTO messageCreationDTO = new MessageCreationDTO("Chao mung ban den voi nhom chat", systemUserId, roomMessage.getId());
+        MessageCreationDTO messageCreationDTO = new MessageCreationDTO(admin.getFirstName() + " da them ban vao nhom chat!", systemUserId, roomMessage.getId());
         this.createMessage(messageCreationDTO);
     }
 

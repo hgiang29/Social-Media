@@ -46,6 +46,7 @@ public class Comment {
         commentDTO.setUserId(user.getId());
         commentDTO.setPostId(post.getId());
         commentDTO.setCommentUser(user.ConvertEntitytoDTO());
+        commentDTO.setCreatedAt(createdAt);
 //        commentDTO.setPost(post.ConvertPostToPostDTO());
         return commentDTO;
     }
