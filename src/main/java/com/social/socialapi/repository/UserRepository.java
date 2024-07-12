@@ -22,4 +22,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findByUsername(String username);
 
+    //@Query("SELECT u FROM User u WHERE u.username LIKE %:username% LIMIT 10")
+    //List<User> findByUsernameContains(@Param("username") String username);
+
 }

@@ -60,11 +60,12 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<UserProfileViewDTO> getUserProfile(@PathVariable int userId) throws UserNotFoundException {
+    public ResponseEntity<UserProfileViewDTO> getUserProfile(@PathVariable int userId, @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
         UserViewDTO userViewDTO = userService.getUserViewDTOById(userId);
         int totalFollowers = followService.getTotalNumberOfFollowers(userId);
         int totalFollowings = followService.getTotalNumberOfFollowings(userId);
-        boolean isFollow = followService.isFollowUser(userId);
+        int meId = userService.getUserIdByUserDetails(userDetails);
+        boolean isFollow = followService.isFollowUser(meId, userId);
 
         UserProfileViewDTO userProfileViewDTO = new UserProfileViewDTO(userViewDTO, totalFollowers, totalFollowings, isFollow);
         return ResponseEntity.ok(userProfileViewDTO);

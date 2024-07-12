@@ -38,4 +38,11 @@ public class UserRepositoryTest {
         System.out.println(users.size());
     }
 
+//    @Test
+//    void findUserByUsernameLike() {
+//        String username = "ht";
+//        List<User> users = userRepository.findByUsernameContains(username);
+//        users.forEach(user -> System.out.println(user.getUsername()));
+//    }
+
 }

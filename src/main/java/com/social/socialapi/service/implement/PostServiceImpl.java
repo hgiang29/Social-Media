@@ -7,6 +7,7 @@ import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
+import com.social.socialapi.events.PostAddedEvent;
 import com.social.socialapi.exceptions.FuncErrorException;
 import com.social.socialapi.repository.post.CommentRepository;
 import com.social.socialapi.repository.post.LikeRepository;
@@ -18,6 +19,7 @@ import com.social.socialapi.service.PostService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +46,9 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private ShareRepository shareRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     public List<Post> getAllPosts() {
         try {
 
@@ -53,7 +58,8 @@ public class PostServiceImpl implements PostService {
             return new ArrayList<>();
         }
     }
-    public List<Post> getAllPostsByUserId(int UserId){
+
+    public List<Post> getAllPostsByUserId(int UserId) {
         return (List<Post>) postRepository.findAllByUserId(UserId);
     }
 
@@ -65,7 +71,7 @@ public class PostServiceImpl implements PostService {
         post.setCreatedAt(Date.from(Instant.now()));
         post.setUpdateAt(Date.from(Instant.now()));
         String postImg = "";
-        if(files != null ) {
+        if (files != null) {
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
                 final CloudinaryResponseDTO responseDTO = this.fileUploadService.uploadFile(file, fileName);
@@ -73,8 +79,12 @@ public class PostServiceImpl implements PostService {
             }
         }
         post.setPost_img(postImg);
-        return postRepository.save(post).ConvertPostToPostDTO();
+        postRepository.save(post);
+
+        eventPublisher.publishEvent(new PostAddedEvent(this, post.getId(), post.getUser().getId()));
+        return post.ConvertPostToPostDTO();
     }
+
     public PostDTO addPost(String content, Integer userId) {
         User user = userRepository.findById(userId).get();
         Post post = new Post();
@@ -91,8 +101,12 @@ public class PostServiceImpl implements PostService {
 //            }
 //        }
         post.setPost_img(postImg);
-        return postRepository.save(post).ConvertPostToPostDTO();
+        postRepository.save(post);
+
+        eventPublisher.publishEvent(new PostAddedEvent(this, post.getId(), post.getUser().getId()));
+        return post.ConvertPostToPostDTO();
     }
+
     public Post getPostById(int id) {
         return postRepository.findById(id).orElse(new Post());
     }
@@ -127,13 +141,11 @@ public class PostServiceImpl implements PostService {
         return postRepository.showLikePost(postId);
     }
 
-    public List<Share> getSharesByPostId(int postId)
-    {
+    public List<Share> getSharesByPostId(int postId) {
         return postRepository.showSharePost(postId);
     }
 
-    public List<Comment> getCommentsByPostId(int postId)
-    {
+    public List<Comment> getCommentsByPostId(int postId) {
         return postRepository.showCommentPost(postId);
     }
     //    public List<Post> search(String keyword) {

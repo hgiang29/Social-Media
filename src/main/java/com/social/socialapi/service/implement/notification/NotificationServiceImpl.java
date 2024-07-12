@@ -9,15 +9,18 @@ import com.social.socialapi.entity.notification.Notification;
 import com.social.socialapi.entity.notification.NotificationObject;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
+import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.events.CommentAddedEvent;
 import com.social.socialapi.events.FollowedEvent;
 import com.social.socialapi.events.LikeAddedEvent;
+import com.social.socialapi.events.PostAddedEvent;
 import com.social.socialapi.repository.FollowRepository;
 import com.social.socialapi.repository.UserRepository;
 import com.social.socialapi.repository.notification.NotificationObjectRepository;
 import com.social.socialapi.repository.notification.NotificationRepository;
 import com.social.socialapi.repository.post.CommentRepository;
 import com.social.socialapi.repository.post.LikeRepository;
+import com.social.socialapi.repository.post.PostRepository;
 import com.social.socialapi.service.NotificationService;
 import com.social.socialapi.service.NotifierStrategy;
 import com.social.socialapi.utils.NotificationEntityTypeMapper;
@@ -48,12 +51,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final LikeRepository likeRepository;
 
+    private final PostRepository postRepository;
+
     private final ModelMapper mapper;
 
     private final SimpMessagingTemplate messagingTemplate;
 
 
-    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationObjectRepository notificationObjectRepository, Map<String, NotifierStrategy> notifierStrategyMap, CommentRepository commentRepository, UserRepository userRepository, FollowRepository followRepository, LikeRepository likeRepository, ModelMapper mapper, SimpMessagingTemplate messagingTemplate) {
+    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationObjectRepository notificationObjectRepository, Map<String, NotifierStrategy> notifierStrategyMap, CommentRepository commentRepository, UserRepository userRepository, FollowRepository followRepository, LikeRepository likeRepository, PostRepository postRepository, ModelMapper mapper, SimpMessagingTemplate messagingTemplate) {
         this.notificationRepository = notificationRepository;
         this.notificationObjectRepository = notificationObjectRepository;
         this.notifierStrategyMap = notifierStrategyMap;
@@ -61,6 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
         this.userRepository = userRepository;
         this.followRepository = followRepository;
         this.likeRepository = likeRepository;
+        this.postRepository = postRepository;
         this.mapper = mapper;
         this.messagingTemplate = messagingTemplate;
     }
@@ -89,7 +95,8 @@ public class NotificationServiceImpl implements NotificationService {
         Follow follow = followRepository.getFollowById(followId);
         List<Integer> notifierIds = notifierStrategyMap.get("followNotifierStrategy").getNotifiers(follow);
 
-        createNotification(follow, followId, senderId, notifierIds);
+        NotificationObject notificationObject = createNotification(follow, followId, senderId, notifierIds);
+        sendLiveNotificationToNotifiers(notifierIds, notificationObject);
     }
 
     @EventListener
@@ -102,6 +109,19 @@ public class NotificationServiceImpl implements NotificationService {
         List<Integer> notifierIds = notifierStrategyMap.get("likeNotifierStrategy").getNotifiers(like);
 
         NotificationObject notificationObject = createNotification(like, likeId, senderId, notifierIds);
+        sendLiveNotificationToNotifiers(notifierIds, notificationObject);
+    }
+
+    @EventListener
+    @Transactional
+    public void handlePostAddedEvent(PostAddedEvent event) {
+        int postId = event.getPostId();
+        int senderId = event.getSenderId();
+
+        Post post = postRepository.findById(postId).get();
+        List<Integer> notifierIds = notifierStrategyMap.get("postNotifierStrategy").getNotifiers(post);
+
+        NotificationObject notificationObject = createNotification(post, postId, senderId, notifierIds);
         sendLiveNotificationToNotifiers(notifierIds, notificationObject);
     }
 
@@ -124,10 +144,16 @@ public class NotificationServiceImpl implements NotificationService {
 
     String generateNotificationContent(NotificationObject notificationObject) {
 
-        String action = notificationObject.getEntityType().name();
+        String notificationContent = notificationObject.getSender().getFirstName() + " ";
 
-        return notificationObject.getSender().getFirstName() + " " + notificationObject.getSender().getLastName()
-                + " " + action;
+        switch (notificationObject.getEntityType()) {
+            case LIKE -> notificationContent = notificationContent + " Like your post";
+            case COMMENT -> notificationContent = notificationContent + " also comment on the post you commented";
+            case FOLLOW -> notificationContent = notificationContent + " started to follow you";
+            case POST -> notificationContent = notificationContent + " created a new post";
+        }
+
+        return notificationContent;
     }
 
     void sendLiveNotificationToNotifiers(List<Integer> notifiers, NotificationObject notificationObject) {
@@ -136,7 +162,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         for (int notifier : notifiers) {
             User user = userRepository.findById(notifier);
-            messagingTemplate.convertAndSendToUser(user.getUsername(), "/queue/private", noti);
+            messagingTemplate.convertAndSendToUser(String.valueOf(user.getId()), "/queue/private", noti);
         }
 
     }

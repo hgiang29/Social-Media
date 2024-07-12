@@ -20,7 +20,7 @@ public interface FollowService {
 
     int getTotalNumberOfFollowings(int userId);
 
-    boolean isFollowUser(int userId);
+    boolean isFollowUser(int meId, int userId);
 
     List<UserViewDTO> getNotFollowUser(int userId);
 

@@ -3,12 +3,14 @@ package com.social.socialapi.dto.inputdto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class RoomMessageCreationDTO {
 
-    private String name;
+    private String roomMessageName;
 
-    private int adminId;
+    private List<Integer> participantIds;
 
 }

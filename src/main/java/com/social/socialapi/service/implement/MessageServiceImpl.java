@@ -36,6 +36,8 @@ public class MessageServiceImpl implements MessageService {
 
     private final ModelMapper mapper;
 
+    private final int systemUserId = 17;
+
     public MessageServiceImpl(UserRepository userRepository, MessageRepository messageRepository, RoomMessageRepository roomMessageRepository, RoomMessageUserRepository roomMessageUserRepository, ModelMapper mapper) {
         this.userRepository = userRepository;
         this.messageRepository = messageRepository;
@@ -45,13 +47,24 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void createRoomMessage(RoomMessageCreationDTO roomMessageCreationDTO) {
-        User admin = userRepository.findById(roomMessageCreationDTO.getAdminId());
-        RoomMessage roomMessage = new RoomMessage(roomMessageCreationDTO.getName(), admin);
+    public void createRoomMessage(int adminId, RoomMessageCreationDTO roomMessageCreationDTO) {
+        User admin = userRepository.findById(adminId);
+
+        // create message room
+        RoomMessage roomMessage = new RoomMessage(roomMessageCreationDTO.getRoomMessageName(), admin);
         roomMessageRepository.save(roomMessage);
 
-        RoomMessageUser roomMessageUser = new RoomMessageUser(roomMessage, admin);
-        roomMessageUserRepository.save(roomMessageUser);
+        // add participants to message room
+        List<Integer> participantIds = roomMessageCreationDTO.getParticipantIds();
+        participantIds.add(adminId);
+        participantIds.add(systemUserId);
+
+        RoomMessageUserCreationDTO roomMessageUserCreationDTO = new RoomMessageUserCreationDTO(roomMessage.getId(), participantIds);
+        this.addRoomMessageParticipant(roomMessageUserCreationDTO);
+
+        // system  user create first message
+        MessageCreationDTO messageCreationDTO = new MessageCreationDTO("Chao mung ban den voi nhom chat", systemUserId, roomMessage.getId());
+        this.createMessage(messageCreationDTO);
     }
 
     @Override

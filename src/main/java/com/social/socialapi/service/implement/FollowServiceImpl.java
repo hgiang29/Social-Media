@@ -89,8 +89,8 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public boolean isFollowUser(int userId) {
-        User me = userRepository.findById(7);
+    public boolean isFollowUser(int meId, int userId) {
+        User me = userRepository.findById(meId);
         User user = userRepository.findById(userId);
 
         return followRepository.existsByUserAndFollower(user, me);

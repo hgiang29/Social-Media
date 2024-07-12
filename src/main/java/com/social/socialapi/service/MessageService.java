@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface MessageService {
 
-    void createRoomMessage(RoomMessageCreationDTO roomMessageCreationDTO);
+    void createRoomMessage(int adminId, RoomMessageCreationDTO roomMessageCreationDTO);
 
     void addRoomMessageParticipant(RoomMessageUserCreationDTO roomMessageUserCreationDTO);
 

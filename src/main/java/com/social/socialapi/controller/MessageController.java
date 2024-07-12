@@ -30,7 +30,8 @@ public class MessageController {
 
     @PostMapping("/message/room")
     public ResponseEntity<String> createMessageRoom(@RequestBody RoomMessageCreationDTO roomMessageCreationDTO, @AuthenticationPrincipal UserDetails userDetails) {
-        messageService.createRoomMessage(roomMessageCreationDTO);
+        int meId = userService.getUserIdByUserDetails(userDetails);
+        messageService.createRoomMessage(meId, roomMessageCreationDTO);
         return ResponseEntity.ok("Tao nhom chat thanh cong");
     }
 
