@@ -17,7 +17,7 @@ import java.util.function.Function;
 public class JwtUntil {
 
     // retrieve email from token
-    private static final long TOKEN_EXPIRATION = 5 * 60 * 60;
+    private static final long TOKEN_EXPIRATION = 5 * 60 * 60 * 60;
 
     private final String SECRET_KEY = "apole";
 

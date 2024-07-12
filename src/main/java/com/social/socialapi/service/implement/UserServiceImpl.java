@@ -114,17 +114,17 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userCreationDTO.getPassword()));
 
         userRepository.save(user);
-        kafkaTemplate.send("send-email", String.valueOf(user.getId()));
+//        kafkaTemplate.send("send-email", String.valueOf(user.getId()));
         return mapper.map(user, UserViewDTO.class);
     }
 
     @Override
     public UserViewDTO verifyEmail(int userId, String Code) {
-         User user = userRepository.findById(userId);
-         Object verifyCode =  redisService.find(user.getEmail());
-         if(verifyCode.equals(Code)){
-             user.setEmailStatus(EmailStatus.Verified);
-         }
+        User user = userRepository.findById(userId);
+        Object verifyCode = redisService.find(user.getEmail());
+        if (verifyCode.equals(Code)) {
+            user.setEmailStatus(EmailStatus.Verified);
+        }
         userRepository.save(user);
         return mapper.map(user, UserViewDTO.class);
     }
