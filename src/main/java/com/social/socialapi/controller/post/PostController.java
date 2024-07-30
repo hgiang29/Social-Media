@@ -1,14 +1,17 @@
 package com.social.socialapi.controller.post;
 
 import com.social.socialapi.dto.request.*;
+import com.social.socialapi.dto.response.PostErrorReponse;
 import com.social.socialapi.entity.post.Comment;
 import com.social.socialapi.entity.post.Like;
 import com.social.socialapi.entity.post.Post;
 import com.social.socialapi.entity.post.Share;
+import com.social.socialapi.exceptions.PostNotFoundException;
 import com.social.socialapi.service.LikeService;
 import com.social.socialapi.service.PostService;
 import com.social.socialapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +58,7 @@ public class PostController {
         try {
             post = postService.getPostById(postId);
         } catch (Exception e) {
-            e.printStackTrace();
+             throw new PostNotFoundException("Post id not found: "+ postId);
         }
         PostDTO postDTO = post.ConvertPostToPostDTO();
         List<LikeDTO> likeDTOList = getLikesForPost(postDTO.getId());
@@ -154,7 +157,13 @@ public class PostController {
 
     @GetMapping("/post/{postId}/comments")
     public List<CommentDTO> getCommentsForPost(@PathVariable int postId) {
-        List<Comment> Comments = postService.getCommentsByPostId(postId);
+        List<Comment> Comments =  null;
+        try {
+            Comments = postService.getCommentsByPostId(postId);
+        }
+        catch (Exception e){
+            throw new PostNotFoundException(e);
+        }
         List<CommentDTO> CommentDTOS = new ArrayList<>();
         for (Comment comment : Comments) {
             List<Like> likes = likeService.getLikesByComment(comment.getId());
