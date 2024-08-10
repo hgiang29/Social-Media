@@ -57,4 +57,7 @@ public class Post {
         createdAt = new Date();
         updateAt = new Date();
     }
+    public Post(String content){
+        this.content = content;
+    }
 }
